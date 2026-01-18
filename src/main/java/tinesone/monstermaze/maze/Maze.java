@@ -6,20 +6,19 @@ public class Maze
     private final int height;
     private Cell[] cells;
 
-    public Maze(int width, int height)
+    public Maze(MazeGenerator generator)
     {
-        this.width = width;
-        this.height = height;
-        this.cells = new Cell[width * height];
+        this.width = generator.getWidth();
+        this.height = generator.getHeight();
+        this.cells = new Cell[this.width * this.height];
+        this.cells = generator.generateMaze();
     }
 
-    public int getWidth() {
-        return width;
-    }
+    public int getWidth() { return width; }
 
-    public int getHeight() {
-        return height;
-    }
+    public int getHeight() { return height; }
+
+    public int getSize() { return width * height; }
 
     public Cell[] mazeArray()
     {
