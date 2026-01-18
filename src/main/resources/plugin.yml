@@ -1,0 +1,7 @@
+name: Monstermaze
+version: 1.0.0
+main: tinesone.monstermaze.MonstermazePlugin
+description: PVP gamemode in a maze
+author: tinesone
+api-version: '1.21.11'
+default-permission: op
