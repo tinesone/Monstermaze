@@ -51,6 +51,6 @@ public class Cell {
     @Override
     public String toString()
     {
-        return "Cell X:".concat(String.valueOf(x)).concat(" Y:".concat(String.valueOf(y)));
+        return "Cell(X:".concat(String.valueOf(x)).concat(" Y:".concat(String.valueOf(y))).concat(")");
     }
 }
