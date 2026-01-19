@@ -5,7 +5,6 @@ import tinesone.monstermaze.maze.Cell;
 import tinesone.monstermaze.maze.MazeGenerator;
 import tinesone.monstermaze.maze.Wall;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
