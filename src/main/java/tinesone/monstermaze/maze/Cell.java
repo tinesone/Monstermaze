@@ -6,6 +6,7 @@ public class Cell {
     private boolean south;
     private boolean east;
     private boolean west;
+
     private final int x;
     private final int y;
 
@@ -47,8 +48,9 @@ public class Cell {
         return y;
     }
 
-    public int[] getCoordinates()
+    @Override
+    public String toString()
     {
-        return new int[] {this.x, this.y};
+        return "Cell X:".concat(String.valueOf(x)).concat(" Y:".concat(String.valueOf(y)));
     }
 }
