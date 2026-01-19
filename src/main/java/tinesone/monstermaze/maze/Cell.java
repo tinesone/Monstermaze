@@ -1,5 +1,7 @@
 package tinesone.monstermaze.maze;
 
+import java.util.Arrays;
+
 public class Cell {
 
     private boolean north;
@@ -26,16 +28,26 @@ public class Cell {
         return new boolean[] {this.north, this.south, this.east, this.west};
     }
 
-    public boolean hasOpenWalls()
+    public void openWall(CardinalDirection direction)
     {
-        for (boolean wall : this.getWalls())
+        switch (direction)
         {
-            if (wall)
-            {
-                return true;
-            }
+        case NORTH -> this.north = true;
+        case SOUTH -> this.south = true;
+        case EAST -> this.east = true;
+        case WEST -> this.west = true;
         }
-        return false;
+    }
+
+    public void closeWall(CardinalDirection direction)
+    {
+        switch (direction)
+        {
+            case NORTH -> this.north = false;
+            case SOUTH -> this.south = false;
+            case EAST -> this.east = false;
+            case WEST -> this.west = false;
+        }
     }
 
     public int getX()
@@ -51,6 +63,6 @@ public class Cell {
     @Override
     public String toString()
     {
-        return "Cell(X:".concat(String.valueOf(x)).concat(" Y:".concat(String.valueOf(y))).concat(")");
+        return "Cell(X:".concat(String.valueOf(x)).concat(" Y:".concat(String.valueOf(y))).concat(" ").concat(Arrays.toString(getWalls())).concat(")");
     }
 }

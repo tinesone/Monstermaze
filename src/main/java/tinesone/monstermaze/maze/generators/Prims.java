@@ -1,6 +1,6 @@
 package tinesone.monstermaze.maze.generators;
 
-import tinesone.monstermaze.maze.CardinalDirections;
+import tinesone.monstermaze.maze.CardinalDirection;
 import tinesone.monstermaze.maze.Cell;
 import tinesone.monstermaze.maze.MazeGenerator;
 import tinesone.monstermaze.maze.Wall;
@@ -21,7 +21,7 @@ public class Prims extends MazeGenerator
     public Cell[] generateMaze()
     {
         Cell[] cells = new Cell[this.getWidth()*this.getHeight()];
-        ArrayList<Cell> visitedCells = new ArrayList<>();
+
         for(int x=0;x<this.getWidth();x++)
         {
             for(int y=0;y<this.getHeight();y++)
@@ -29,29 +29,56 @@ public class Prims extends MazeGenerator
                 cells[x + y*this.getWidth()] = new Cell(x,y);
             }
         }
+
+
         Cell startCell = cells[(int) (Math.random()*cells.length)];
+        ArrayList<Cell> visitedCells = new ArrayList<>();
         visitedCells.add(startCell);
 
         ArrayList<Wall> walls = new ArrayList<>();
-        walls.add(new Wall(startCell, CardinalDirections.NORTH));
-        walls.add(new Wall(startCell, CardinalDirections.SOUTH));
-        walls.add(new Wall(startCell, CardinalDirections.EAST));
-        walls.add(new Wall(startCell, CardinalDirections.WEST));
+        walls.add(new Wall(startCell, CardinalDirection.NORTH));
+        walls.add(new Wall(startCell, CardinalDirection.SOUTH));
+        walls.add(new Wall(startCell, CardinalDirection.EAST));
+        walls.add(new Wall(startCell, CardinalDirection.WEST));
 
         while (!walls.isEmpty())
         {
             Wall wall = getRandomWall(walls);
+            walls.remove(wall);
+
             Optional<Cell> optionalCell = getNeighbor(cells, wall.cell(), wall.direction());
-            if (optionalCell.isEmpty()) { continue; }
-            Cell neighborCell = optionalCell.get();
+            Cell neighborCell;
+            if (optionalCell.isPresent())
+            {
+                neighborCell = optionalCell.get();
+            } else
+            {
+                continue;
+            }
+
             if (visitedCells.contains(neighborCell)) { continue; }
             visitedCells.add(neighborCell);
-            walls.add(new Wall(neighborCell, CardinalDirections.NORTH));
-            walls.add(new Wall(neighborCell, CardinalDirections.SOUTH));
-            walls.add(new Wall(neighborCell, CardinalDirections.EAST));
-            walls.add(new Wall(neighborCell, CardinalDirections.WEST));
+            wall.cell().openWall(wall.direction());
+            neighborCell.openWall(wall.direction().oppositeDirection());
+            walls.add(new Wall(neighborCell, CardinalDirection.NORTH));
+            walls.add(new Wall(neighborCell, CardinalDirection.SOUTH));
+            walls.add(new Wall(neighborCell, CardinalDirection.EAST));
+            walls.add(new Wall(neighborCell, CardinalDirection.WEST));
         }
-        return visitedCells.toArray(new Cell[visitedCells.size()]);
+
+        for(Cell cell : cells)
+        {
+            for (CardinalDirection direction : CardinalDirection.values())
+            {
+                Optional<Cell> optionalCell = getNeighbor(cells, cell, direction);
+                if (optionalCell.isEmpty())
+                {
+                    cell.closeWall(direction);
+                }
+            }
+        }
+
+        return cells;
     }
 
     private Wall getRandomWall(ArrayList<Wall> walls)
@@ -60,7 +87,7 @@ public class Prims extends MazeGenerator
         return walls.get(index);
     }
 
-    private Optional<Cell> getNeighbor(Cell[] cells, Cell cell, CardinalDirections direction)
+    private Optional<Cell> getNeighbor(Cell[] cells, Cell cell, CardinalDirection direction)
     {
         int x = cell.getX() + direction.getDx();
         int y = cell.getY() + direction.getDy();
@@ -74,6 +101,9 @@ public class Prims extends MazeGenerator
     {
         Prims p = new Prims(10, 10);
         Cell[] cells = p.generateMaze();
-        System.out.println(Arrays.toString(cells));
+        for(int i=0;i<p.getWidth();i++)
+        {
+            System.out.println(Arrays.toString(Arrays.copyOfRange(cells, i * p.getWidth(), (i + 1) * p.getWidth())));
+        }
     }
 }
