@@ -1,6 +1,7 @@
 package tinesone.monstermaze.maze;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 
 public class Cell {
 
@@ -50,6 +51,16 @@ public class Cell {
         }
     }
 
+    public EnumSet<CardinalDirection> getOpenWalls()
+    {
+        EnumSet<CardinalDirection> open = EnumSet.noneOf(CardinalDirection.class);
+        if (this.north) { open.add(CardinalDirection.NORTH); }
+        if (this.south) { open.add(CardinalDirection.SOUTH); }
+        if (this.east) { open.add(CardinalDirection.EAST); }
+        if (this.west) { open.add(CardinalDirection.WEST); }
+        return open;
+    }
+
     public int getX()
     {
         return x;
@@ -63,6 +74,19 @@ public class Cell {
     @Override
     public String toString()
     {
-        return "Cell(X:".concat(String.valueOf(x)).concat(" Y:".concat(String.valueOf(y))).concat(" ").concat(Arrays.toString(getWalls())).concat(")");
+        EnumSet<CardinalDirection> openWalls = getOpenWalls();
+        if (openWalls.size() == 1) { return "-"; }
+        if (openWalls.size() == 2) { return "L"; }
+        if (openWalls.size() == 3) { return "T"; }
+        if (openWalls.size() == 4) { return "+"; }
+        return "x";
     }
+
+
+    /*@Override
+    public String toString()
+    {
+        return "Cell(X:".concat(String.valueOf(x)).concat(" Y:".concat(String.valueOf(y))).concat(" ").concat(Arrays.toString(getWalls())).concat(")");
+    } */
+
 }

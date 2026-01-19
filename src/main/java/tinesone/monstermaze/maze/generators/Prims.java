@@ -96,14 +96,4 @@ public class Prims extends MazeGenerator
 
         return Optional.of(cells[x + this.getWidth() * y]);
     }
-
-    public static void main(String[] args)
-    {
-        Prims p = new Prims(10, 10);
-        Cell[] cells = p.generateMaze();
-        for(int i=0;i<p.getWidth();i++)
-        {
-            System.out.println(Arrays.toString(Arrays.copyOfRange(cells, i * p.getWidth(), (i + 1) * p.getWidth())));
-        }
-    }
 }
