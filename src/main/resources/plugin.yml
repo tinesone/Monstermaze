@@ -5,3 +5,7 @@ description: PVP gamemode in a maze
 author: tinesone
 api-version: '1.21.11'
 default-permission: op
+
+commands:
+  generate:
+    description: Generate a maze. Made for testing purposes

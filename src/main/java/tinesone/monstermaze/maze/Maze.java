@@ -35,7 +35,7 @@ public class Maze
         return grid;
     }
 
-    public static void main(String[] args)
+    /*public static void main(String[] args)
     {
         int width = 25;
         int height = 25;
@@ -45,5 +45,5 @@ public class Maze
         {
             System.out.println(Arrays.toString(Arrays.copyOfRange(maze.grid(), i * width, (i + 1) * width)));
         }
-    }
+    } */
 }

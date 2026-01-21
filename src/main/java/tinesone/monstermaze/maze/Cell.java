@@ -72,12 +72,4 @@ public class Cell {
         if (openWalls.size() == 4) { return "+"; }
         return "x";
     }
-
-
-    /*@Override
-    public String toString()
-    {
-        return "Cell(X:".concat(String.valueOf(x)).concat(" Y:".concat(String.valueOf(y))).concat(" ").concat(Arrays.toString(getWalls())).concat(")");
-    } */
-
 }

@@ -1,14 +1,10 @@
 package tinesone.monstermaze;
 
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import tinesone.monstermaze.commands.GenerateMazeCommand;
 
 public class MonstermazePlugin extends JavaPlugin implements Listener
 {
@@ -16,12 +12,9 @@ public class MonstermazePlugin extends JavaPlugin implements Listener
     public void onEnable()
     {
         Bukkit.getPluginManager().registerEvents(this, this);
+        LevelBuilder levelBuilder = new LevelBuilder(this);
+        getCommand("generate").setExecutor(new GenerateMazeCommand(levelBuilder));
     }
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event)
-    {
-        Player player = event.getPlayer();
-        player.sendMessage(Component.text("You joined!! " + player.getName(), NamedTextColor.YELLOW));
-    }
+
 }
