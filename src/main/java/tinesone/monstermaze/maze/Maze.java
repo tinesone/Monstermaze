@@ -8,14 +8,20 @@ public class Maze
 {
     private final int width;
     private final int height;
-    private Cell[] grid;
+    private final Cell[] grid;
 
-    public Maze(MazeGenerator generator)
+    public Maze(Cell[] cells, int width, int height)
     {
-        this.width = generator.getWidth();
-        this.height = generator.getHeight();
-        this.grid = new Cell[this.width * this.height];
-        this.grid = generator.generateMaze();
+        this.width = width;
+        this.height = height;
+        this.grid = cells;
+
+
+        if (cells.length != width * height) {
+            throw new IllegalArgumentException("Dimension of cells " + cells.length
+                    + " does not match specified dimension of maze ("
+                    + width + ", " + height + ")");
+        }
     }
 
     public int getWidth() { return this.width; }
@@ -33,7 +39,8 @@ public class Maze
     {
         int width = 25;
         int height = 25;
-        Maze maze = new Maze(new Prims(width, height));
+        Prims p = new Prims();
+        Maze maze = p.generate(width, height);
         for(int i=0;i<width;i++)
         {
             System.out.println(Arrays.toString(Arrays.copyOfRange(maze.grid(), i * width, (i + 1) * width)));

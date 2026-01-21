@@ -1,84 +1,67 @@
 package tinesone.monstermaze.maze.generators;
 
-import tinesone.monstermaze.maze.CardinalDirection;
-import tinesone.monstermaze.maze.Cell;
-import tinesone.monstermaze.maze.MazeGenerator;
-import tinesone.monstermaze.maze.Wall;
+import tinesone.monstermaze.maze.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 
 
-public class Prims extends MazeGenerator
+public class Prims extends MazeGeneratorBase
 {
-    public Prims(int width, int height)
+    public void generate(Cell[] cells, int width, int height)
     {
-        super(width, height);
-    }
 
-    @Override
-    public Cell[] generateMaze()
-    {
-        Cell[] cells = new Cell[this.getWidth()*this.getHeight()];
-
-        for(int x=0;x<this.getWidth();x++)
+        for(int x=0;x<width;x++)
         {
-            for(int y=0;y<this.getHeight();y++)
+            for(int y=0;y<height;y++)
             {
-                cells[x + y*this.getWidth()] = new Cell(x,y);
+                cells[x + y*width] = new Cell();
             }
         }
 
 
-        Cell startCell = cells[(int) (Math.random()*cells.length)];
-        ArrayList<Cell> visitedCells = new ArrayList<>();
-        visitedCells.add(startCell);
+        int x = (int) (Math.random()*width);
+        int y = (int) (Math.random()*height);
+        ArrayList<Integer> visitedCellsIndices = new ArrayList<>();
+        visitedCellsIndices.add(x + y*width);
 
         ArrayList<Wall> walls = new ArrayList<>();
-        walls.add(new Wall(startCell, CardinalDirection.NORTH));
-        walls.add(new Wall(startCell, CardinalDirection.SOUTH));
-        walls.add(new Wall(startCell, CardinalDirection.EAST));
-        walls.add(new Wall(startCell, CardinalDirection.WEST));
+        walls.add(new Wall(x + y*width, CardinalDirection.NORTH));
+        walls.add(new Wall(x + y*width, CardinalDirection.SOUTH));
+        walls.add(new Wall(x + y*width, CardinalDirection.EAST));
+        walls.add(new Wall(x + y*width, CardinalDirection.WEST));
 
         while (!walls.isEmpty())
         {
             Wall wall = getRandomWall(walls);
             walls.remove(wall);
 
-            Optional<Cell> optionalCell = getNeighbor(cells, wall.cell(), wall.direction());
-            Cell neighborCell;
-            if (optionalCell.isPresent())
+            //Optional<Cell> optionalCell = getNeighbor(cells, width, height);
+            int cellIndex = wall.cellIndex();
+            Optional<Integer> optionalNeighborCellIndex = getNeighborIndex(cellIndex, width, height, wall.direction());
+            int neighborCellIndex;
+            if (optionalNeighborCellIndex.isPresent())
             {
-                neighborCell = optionalCell.get();
+                neighborCellIndex =  optionalNeighborCellIndex.get();
             } else
             {
                 continue;
             }
 
-            if (visitedCells.contains(neighborCell)) { continue; }
-            visitedCells.add(neighborCell);
-            wall.cell().openWall(wall.direction());
+            if (visitedCellsIndices.contains(neighborCellIndex)) { continue; }
+            visitedCellsIndices.add(neighborCellIndex);
+
+
+            Cell neighborCell = cells[neighborCellIndex];
             neighborCell.openWall(wall.direction().oppositeDirection());
-            walls.add(new Wall(neighborCell, CardinalDirection.NORTH));
-            walls.add(new Wall(neighborCell, CardinalDirection.SOUTH));
-            walls.add(new Wall(neighborCell, CardinalDirection.EAST));
-            walls.add(new Wall(neighborCell, CardinalDirection.WEST));
-        }
+            cells[cellIndex].openWall(wall.direction());
 
-        for(Cell cell : cells)
-        {
-            for (CardinalDirection direction : CardinalDirection.values())
-            {
-                Optional<Cell> optionalCell = getNeighbor(cells, cell, direction);
-                if (optionalCell.isEmpty())
-                {
-                    cell.closeWall(direction);
-                }
-            }
-        }
 
-        return cells;
+            walls.add(new Wall(neighborCellIndex, CardinalDirection.NORTH));
+            walls.add(new Wall(neighborCellIndex, CardinalDirection.SOUTH));
+            walls.add(new Wall(neighborCellIndex, CardinalDirection.EAST));
+            walls.add(new Wall(neighborCellIndex, CardinalDirection.WEST));
+        }
     }
 
     private Wall getRandomWall(ArrayList<Wall> walls)
@@ -87,13 +70,16 @@ public class Prims extends MazeGenerator
         return walls.get(index);
     }
 
-    private Optional<Cell> getNeighbor(Cell[] cells, Cell cell, CardinalDirection direction)
+    private Optional<Integer> getNeighborIndex(int index, int width, int height, CardinalDirection direction)
     {
-        int x = cell.getX() + direction.getDx();
-        int y = cell.getY() + direction.getDy();
+        int x = (index % width) + direction.getDx();
+        int y = (index / width) + direction.getDy();
 
-        if (x < 0 || x >= this.getWidth() || y < 0 || y >= this.getHeight()) { return Optional.empty(); }
+        if (x < 0 || x >= width || y < 0 || y >= height)
+        {
+            return Optional.empty();
+        }
 
-        return Optional.of(cells[x + this.getWidth() * y]);
+        return Optional.of(x + width * y);
     }
 }

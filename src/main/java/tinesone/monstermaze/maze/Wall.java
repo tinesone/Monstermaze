@@ -1,5 +1,5 @@
 package tinesone.monstermaze.maze;
 
-public record Wall(Cell cell, CardinalDirection direction)
+public record Wall(int cellIndex, CardinalDirection direction)
 {
 }

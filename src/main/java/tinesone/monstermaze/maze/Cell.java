@@ -10,18 +10,14 @@ public class Cell {
     private boolean east;
     private boolean west;
 
-    private final int x;
-    private final int y;
 
-    public Cell(int x, int y)
+    public Cell()
     {
         north = false;
         south = false;
         east = false;
         west = false;
 
-        this.x = x;
-        this.y = y;
     }
 
     public boolean[] getWalls()
@@ -61,22 +57,17 @@ public class Cell {
         return open;
     }
 
-    public int getX()
-    {
-        return x;
-    }
-
-    public int getY()
-    {
-        return y;
-    }
 
     @Override
     public String toString()
     {
         EnumSet<CardinalDirection> openWalls = getOpenWalls();
-        if (openWalls.size() == 1) { return "-"; }
-        if (openWalls.size() == 2) { return "L"; }
+        if (openWalls.size() == 1) { return "u"; }
+        if (openWalls.size() == 2)
+        {
+            if (openWalls.equals(EnumSet.of(CardinalDirection.NORTH, CardinalDirection.SOUTH)) || openWalls.equals(EnumSet.of(CardinalDirection.EAST, CardinalDirection.WEST))) { return "-"; }
+            return "L";
+        }
         if (openWalls.size() == 3) { return "T"; }
         if (openWalls.size() == 4) { return "+"; }
         return "x";
