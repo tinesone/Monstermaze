@@ -37,7 +37,11 @@ public class GenerateMazeCommand implements CommandExecutor
             return true;
         }
 
-        levelBuilder.place(initialLocation, 25, 25, player);
+        if (!levelBuilder.place(initialLocation, 25, 25, player))
+        {
+            player.sendMessage("error >:(");
+            return true;
+        }
         return true;
     }
 }

@@ -15,6 +15,4 @@ public class MonstermazePlugin extends JavaPlugin implements Listener
         LevelBuilder levelBuilder = new LevelBuilder(this);
         getCommand("generate").setExecutor(new GenerateMazeCommand(levelBuilder));
     }
-
-
 }
