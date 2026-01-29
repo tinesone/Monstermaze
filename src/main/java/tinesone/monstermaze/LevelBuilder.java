@@ -36,8 +36,9 @@ public class LevelBuilder
         Structure mazePiece= getStructure(maze.grid()[4]);
 
         assert mazePiece != null;
-        player.sendMessage(String.valueOf(mazePiece.getSize().getX()));
-        mazePiece.place(location, false, StructureRotation.NONE, Mirror.NONE, -1, 1, new Random());
+        // player.sendMessage(String.valueOf(mazePiece.getSize().getX()));
+        // player.sendMessage(location.toString());
+        mazePiece.place(location, false, StructureRotation.NONE, Mirror.NONE, 0, 1, new Random());
         return true;
     }
 
@@ -49,25 +50,25 @@ public class LevelBuilder
         EnumSet<CardinalDirection> openWalls = cell.getOpenWalls();
         if(openWalls.isEmpty())
         {
-            stream = plugin.getResource("structures/wall.nbt");
+            stream = plugin.getResource("structures/test/wall.nbt");
         } else if (openWalls.size() == 1)
         {
-            stream = plugin.getResource("structures/deadend.nbt");
+            stream = plugin.getResource("structures/test/deadend.nbt");
         } else if (openWalls.size() == 2)
         {
             if(openWalls.equals(EnumSet.of(CardinalDirection.NORTH, CardinalDirection.SOUTH)) || openWalls.equals(EnumSet.of(CardinalDirection.EAST, CardinalDirection.WEST)))
             {
-                stream = plugin.getResource("structures/straigth.nbt");
+                stream = plugin.getResource("structures/test/straigth.nbt");
             } else
             {
-                stream = plugin.getResource("structures/corner.nbt");
+                stream = plugin.getResource("structures/test/corner.nbt");
             }
         } else if (openWalls.size() == 3)
         {
-            stream = plugin.getResource("structures/t_cross.nbt");
+            stream = plugin.getResource("structures/test/t_cross.nbt");
         } else
         {
-            stream = plugin.getResource("structures/cross.nbt");
+            stream = plugin.getResource("structures/test/cross.nbt");
         }
         StructureManager structureManager = Bukkit.getStructureManager();
         try

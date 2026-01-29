@@ -30,12 +30,14 @@ public class GenerateMazeCommand implements CommandExecutor
         Location initialLocation;
         try
         {
-            initialLocation = new Location(player.getWorld(), Integer.parseInt(args[0]), Integer.parseInt(args[0]), Integer.parseInt(args[0]));
+            initialLocation = new Location(player.getWorld(), Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e)
         {
             commandSender.sendMessage( "Please enter a valid location.");
             return true;
         }
+
+        player.sendMessage(initialLocation.toString());
 
         if (!levelBuilder.place(initialLocation, 25, 25, player))
         {
