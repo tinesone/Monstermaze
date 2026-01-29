@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import tinesone.monstermaze.commands.GenerateMazeCommand;
+import tinesone.monstermaze.levelbuilder.LevelBuilder;
 
 public class MonstermazePlugin extends JavaPlugin implements Listener
 {
@@ -13,6 +14,6 @@ public class MonstermazePlugin extends JavaPlugin implements Listener
     {
         Bukkit.getPluginManager().registerEvents(this, this);
         LevelBuilder levelBuilder = new LevelBuilder(this);
-        getCommand("generate").setExecutor(new GenerateMazeCommand(levelBuilder));
+        getCommand("generateMaze").setExecutor(new GenerateMazeCommand(levelBuilder));
     }
 }

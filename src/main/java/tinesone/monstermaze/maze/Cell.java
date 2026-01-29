@@ -1,7 +1,10 @@
 package tinesone.monstermaze.maze;
 
-import java.util.Arrays;
+import org.bukkit.block.structure.StructureRotation;
+import tinesone.monstermaze.levelbuilder.CellType;
+
 import java.util.EnumSet;
+import java.util.Random;
 
 public class Cell {
 
@@ -20,10 +23,6 @@ public class Cell {
 
     }
 
-    public boolean[] getWalls()
-    {
-        return new boolean[] {this.north, this.south, this.east, this.west};
-    }
 
     public void openWall(CardinalDirection direction)
     {
@@ -57,19 +56,69 @@ public class Cell {
         return open;
     }
 
-
-    @Override
-    public String toString()
+    public CellType getCellType()
     {
-        EnumSet<CardinalDirection> openWalls = getOpenWalls();
-        if (openWalls.size() == 1) { return "u"; }
-        if (openWalls.size() == 2)
+        EnumSet<CardinalDirection> openWalls = this.getOpenWalls();
+        int setSize = openWalls.size();
+        if (setSize == 1) { return CellType.DEADEND; }
+        else if (setSize == 2)
         {
-            if (openWalls.equals(EnumSet.of(CardinalDirection.NORTH, CardinalDirection.SOUTH)) || openWalls.equals(EnumSet.of(CardinalDirection.EAST, CardinalDirection.WEST))) { return "-"; }
-            return "L";
+            if(openWalls.equals(EnumSet.of(CardinalDirection.NORTH, CardinalDirection.SOUTH)) || openWalls.equals(EnumSet.of(CardinalDirection.EAST, CardinalDirection.WEST))) { return CellType.STRAIGHT; }
+            else { return CellType.CORNER; }
         }
-        if (openWalls.size() == 3) { return "T"; }
-        if (openWalls.size() == 4) { return "+"; }
-        return "x";
+        else if (setSize == 3) { return CellType.T_CROSS; }
+        else if (setSize == 4) { return CellType.CROSS; }
+        return CellType.WALL;
+    }
+
+    public StructureRotation getRotation() {
+        // Structure files should be saved with north direction as up.
+        EnumSet<CardinalDirection> directions = this.getOpenWalls();
+        return switch (getCellType()) {
+            case CellType.STRAIGHT -> {
+                if (directions.contains(CardinalDirection.NORTH)) {
+                    yield StructureRotation.NONE;
+                }
+                yield StructureRotation.CLOCKWISE_90;
+            }
+            case CellType.CORNER -> {
+                //North
+                if (directions.contains(CardinalDirection.NORTH)) {
+                    if (directions.contains(CardinalDirection.EAST)) {
+                        yield StructureRotation.NONE;
+                    } //North-East
+                    yield StructureRotation.COUNTERCLOCKWISE_90;
+                }
+                //South
+                else if (directions.contains(CardinalDirection.EAST)) {
+                    yield StructureRotation.CLOCKWISE_90;
+                } //South-East
+                yield StructureRotation.CLOCKWISE_180; //South-East
+            }
+            case CellType.T_CROSS -> {
+                if (!directions.contains(CardinalDirection.SOUTH)) {
+                    yield StructureRotation.NONE;
+                } else if (!directions.contains(CardinalDirection.WEST)) {
+                    yield StructureRotation.CLOCKWISE_90;
+                } else if (!directions.contains(CardinalDirection.NORTH)) {
+                    yield StructureRotation.CLOCKWISE_180;
+                }
+                yield StructureRotation.COUNTERCLOCKWISE_90;
+            }
+            case CellType.DEADEND -> {
+                if (directions.contains(CardinalDirection.NORTH)) {
+                    yield StructureRotation.NONE;
+                } else if (directions.contains(CardinalDirection.EAST)) {
+                    yield StructureRotation.CLOCKWISE_90;
+                } else if (directions.contains(CardinalDirection.SOUTH)) {
+                    yield StructureRotation.CLOCKWISE_180;
+                }
+                yield StructureRotation.COUNTERCLOCKWISE_90;
+            }
+            default -> {
+                int randomInt = (int) (Math.random() * 4);
+                yield StructureRotation.values()[randomInt];
+            }
+        };
     }
 }

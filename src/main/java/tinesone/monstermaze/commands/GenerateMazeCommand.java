@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import tinesone.monstermaze.LevelBuilder;
+import tinesone.monstermaze.levelbuilder.LevelBuilder;
 
 
 public class GenerateMazeCommand implements CommandExecutor
@@ -37,11 +37,10 @@ public class GenerateMazeCommand implements CommandExecutor
             return true;
         }
 
-        player.sendMessage(initialLocation.toString());
 
-        if (!levelBuilder.place(initialLocation, 25, 25, player))
+        if (!levelBuilder.place(initialLocation, 25, 35, "test"))
         {
-            player.sendMessage("error >:(");
+            player.sendMessage("error when loading the maze. Check the log");
             return true;
         }
         return true;
