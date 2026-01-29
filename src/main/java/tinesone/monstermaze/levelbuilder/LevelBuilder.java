@@ -19,7 +19,7 @@ import java.util.Random;
 
 public class LevelBuilder
 {
-    private Plugin plugin;
+    private final Plugin plugin;
 
     public LevelBuilder(@NotNull Plugin plugin)
     {
@@ -30,24 +30,10 @@ public class LevelBuilder
     {
         Prims prims = new Prims();
         Maze maze = prims.generate(width, height);
-        for(CellType cellType : CellType.values())
-        {
-            if (plugin.getResource(cellType.getStructureLocation(mazeFolder)) == null)
-            {
-                plugin.getComponentLogger().warn("Not all cells have a .nbt file! Missing: {}", cellType);
-                return false;
-            }
-            Structure structure = getStructure(CellType.WALL, mazeFolder);
-            assert structure != null;
-            if ((structure.getSize().getZ()) != structure.getSize().getX())
-            {
-                plugin.getComponentLogger().warn("Not all cells are square! Wrong size structure: {} X: {} Z: {}", cellType, structure.getSize().getZ(), structure.getSize().getX());
-                return false;
-            }
-        }
+
+        if (!this.sanityCheck(mazeFolder)) { return false; }
 
 
-        int step = (int) Objects.requireNonNull(getStructure(CellType.WALL, mazeFolder)).getSize().getX();
 
         Random rn = new Random();
 
@@ -55,24 +41,8 @@ public class LevelBuilder
         {
             for(int y=0; y<height;y++)
             {
-                Cell cell = maze.grid()[x + y*width];
-                Structure mazePiece= getStructure(cell.getCellType(), mazeFolder);
-
-                if (mazePiece == null) { return false; }
-                StructureRotation rotation = cell.getRotation();
-
-                Location placeLocation;
-                placeLocation = location.clone();
-
-
-                if (rotation.equals(StructureRotation.CLOCKWISE_90)) { placeLocation.add(-1 + step, 0, 0); }
-                else if (rotation.equals(StructureRotation.COUNTERCLOCKWISE_90)) { placeLocation.add(0, 0, -1 + step); }
-                else if (rotation.equals(StructureRotation.CLOCKWISE_180)) {placeLocation.add(-1 + step, 0, -1 + step); }
-
-                mazePiece.place(placeLocation, false, rotation, Mirror.NONE, 0, 1, rn);
-                location.add(step, 0, 0);
+               //TODO
             }
-            location.add(-height*step, 0, step);
         }
 
 
@@ -101,5 +71,25 @@ public class LevelBuilder
         {
             return null;
         }
+    }
+
+    private boolean sanityCheck(String mazeFolder)
+    {
+        for(CellType cellType : CellType.values())
+        {
+            if (plugin.getResource(cellType.getStructureLocation(mazeFolder)) == null)
+            {
+                plugin.getComponentLogger().warn("Not all cells have a .nbt file! Missing: {}", mazeFolder + "/" + cellType);
+                return false;
+            }
+            Structure structure = getStructure(CellType.WALL, mazeFolder);
+            assert structure != null;
+            if ((structure.getSize().getZ()) != structure.getSize().getX())
+            {
+                plugin.getComponentLogger().warn("Not all cells are square! Wrong size structure: {}, X: {}, Z: {}", mazeFolder + "/" + cellType, structure.getSize().getZ(), structure.getSize().getX());
+                return false;
+            }
+        }
+        return true;
     }
 }

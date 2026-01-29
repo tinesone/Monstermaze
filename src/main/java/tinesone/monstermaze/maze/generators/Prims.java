@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 
-public class Prims extends MazeGeneratorBase
+public final class Prims extends MazeGeneratorBase
 {
     public void generate(Cell[] cells, int width, int height)
     {
