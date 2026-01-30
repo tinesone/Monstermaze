@@ -14,6 +14,7 @@ import tinesone.monstermaze.maze.generators.Prims;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Random;
 
 public class LevelBuilder
@@ -27,25 +28,28 @@ public class LevelBuilder
         this.plugin = plugin;
     }
 
-    public boolean place(Location location, int width, int height, String mazeFolder)
+    public boolean place(Location initLocation, int width, int height, String mazeFolder)
     {
         Prims prims = new Prims();
         Maze maze = prims.generate(width, height);
 
         if (!this.sanityCheck(mazeFolder)) { return false; }
 
-
+        int cellLength = (int) Objects.requireNonNull(getStructure(CellType.WALL, mazeFolder)).getSize().getX();
 
         for(int x=0; x<width;x++)
         {
             for(int y=0; y<height;y++)
             {
-                //TODO, figure out rotation and shit
+                Cell cell = maze.grid()[x + y*width];
+
+                Structure structure = getStructure(cell.getCellType(), mazeFolder);
+                Location cellOrigin = initLocation.clone().add(x * cellLength, 0, y*cellLength);
+                assert structure != null;
+                MazePlacer.placePiece(structure, cellOrigin, cell.getRotation(), rn); //Shamefully Ai-assisted :(
+
             }
         }
-
-
-
         return true;
     }
 
