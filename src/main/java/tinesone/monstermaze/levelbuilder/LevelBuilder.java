@@ -14,12 +14,13 @@ import tinesone.monstermaze.maze.generators.Prims;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
 import java.util.Random;
 
 public class LevelBuilder
 {
     private final Plugin plugin;
+
+    private final Random rn = new Random();
 
     public LevelBuilder(@NotNull Plugin plugin)
     {
@@ -35,13 +36,11 @@ public class LevelBuilder
 
 
 
-        Random rn = new Random();
-
         for(int x=0; x<width;x++)
         {
             for(int y=0; y<height;y++)
             {
-               //TODO
+                //TODO, figure out rotation and shit
             }
         }
 

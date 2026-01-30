@@ -4,7 +4,6 @@ import org.bukkit.block.structure.StructureRotation;
 import tinesone.monstermaze.levelbuilder.CellType;
 
 import java.util.EnumSet;
-import java.util.Random;
 
 public class Cell {
 
