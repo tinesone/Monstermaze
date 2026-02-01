@@ -42,15 +42,17 @@ public class StructureAnchorExtractor
                 for(int z = location.getBlockZ(); z < location.getBlockZ() + endLocation.getBlockZ(); z++)
                 {
                     Block block = new Location(location.getWorld(), x, y, z).getBlock();
-                    if (block.getType().equals(Material.CHAIN_COMMAND_BLOCK))
+                    if (!block.getType().equals(Material.CHAIN_COMMAND_BLOCK))
                     {
-                        CommandBlock commandBlock = (CommandBlock) block.getState();
-                        if (commandBlock.getCommand().equals("marker"))
-                        {
-                            markerCount++;
-                            structureAnchorPoint = new StructureAnchorPoint(x - location.getBlockX(), z - location.getBlockZ());
-                        }
+                       continue;
                     }
+                    CommandBlock commandBlock = (CommandBlock) block.getState();
+                    if (!commandBlock.getCommand().equals("marker"))
+                    {
+                        continue;
+                    }
+                    markerCount++;
+                    structureAnchorPoint = new StructureAnchorPoint(x - location.getBlockX(), z - location.getBlockZ());
                 }
             }
         }
