@@ -34,8 +34,19 @@ public class LevelBuilder
         Maze maze = prims.generate(width, height);
 
         if (!this.sanityCheck(mazeFolder)) { return false; }
+        StructureAnchorExtractor structureAnchorExtractor = new StructureAnchorExtractor();
+        StructureAnchorPoint structureAnchorPoint = structureAnchorExtractor.getAnchorPoint(Objects.requireNonNull(getStructure(CellType.CORNER, mazeFolder)), initLocation);
+        if (structureAnchorPoint == null)
+        {
+            plugin.getComponentLogger().warn("Something went wrong when looking for the marker!");
+            return false;
+        }
+        else
+        {
+            plugin.getComponentLogger().info("Successfully found the marker!");
+        }
 
-        int cellLength = (int) Objects.requireNonNull(getStructure(CellType.WALL, mazeFolder)).getSize().getX();
+        /*int cellLength = (int) Objects.requireNonNull(getStructure(CellType.WALL, mazeFolder)).getSize().getX();
 
         for(int x=0; x<width;x++)
         {
@@ -46,10 +57,10 @@ public class LevelBuilder
                 Structure structure = getStructure(cell.getCellType(), mazeFolder);
                 Location cellOrigin = initLocation.clone().add(x * cellLength, 0, y*cellLength);
                 assert structure != null;
-                MazePlacer.placePiece(structure, cellOrigin, cell.getRotation(), rn); //Shamefully Ai-assisted :(
+                MazePlacer.placePiece(structure, cellOrigin, cell.getRotation(), rn);
 
             }
-        }
+        } */
         return true;
     }
 
