@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import tinesone.monstermaze.levelbuilder.LevelBuilder;
 
@@ -12,25 +12,22 @@ import tinesone.monstermaze.levelbuilder.LevelBuilder;
 public class GenerateMazeCommand implements CommandExecutor
 {
     private final LevelBuilder levelBuilder;
+    private final Plugin plugin;
 
-    public GenerateMazeCommand(LevelBuilder levelBuilder)
+    public GenerateMazeCommand(Plugin plugin, LevelBuilder levelBuilder)
     {
+        this.plugin = plugin;
         this.levelBuilder = levelBuilder;
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] args)
     {
-        if (!(commandSender instanceof Player player))
-        {
-            commandSender.sendMessage("Only players can execute this command.");
-            return true;
-        }
 
         Location initialLocation;
         try
         {
-            initialLocation = new Location(player.getWorld(), Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+            initialLocation = new Location(plugin.getServer().getWorld("world"), Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e)
         {
             commandSender.sendMessage( "Please enter a valid location.");
@@ -40,7 +37,7 @@ public class GenerateMazeCommand implements CommandExecutor
 
         if (!levelBuilder.place(initialLocation, 25, 35, "test"))
         {
-            player.sendMessage("error when loading the maze. Check the log");
+            commandSender.sendMessage("error when loading the maze. Check the log");
             return true;
         }
         return true;

@@ -14,6 +14,6 @@ public class MonstermazePlugin extends JavaPlugin implements Listener
     {
         Bukkit.getPluginManager().registerEvents(this, this);
         LevelBuilder levelBuilder = new LevelBuilder(this);
-        getCommand("generateMaze").setExecutor(new GenerateMazeCommand(levelBuilder));
+        getCommand("generateMaze").setExecutor(new GenerateMazeCommand(this, levelBuilder));
     }
 }
