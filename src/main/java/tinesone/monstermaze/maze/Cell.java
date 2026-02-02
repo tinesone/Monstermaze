@@ -1,9 +1,10 @@
 package tinesone.monstermaze.maze;
 
-import org.bukkit.block.structure.StructureRotation;
 import tinesone.monstermaze.levelbuilder.CellType;
+import tinesone.monstermaze.levelbuilder.Rotation;
 
 import java.util.EnumSet;
+import java.util.Random;
 
 public class Cell {
 
@@ -69,55 +70,68 @@ public class Cell {
         else if (setSize == 4) { return CellType.CROSS; }
         return CellType.WALL;
     }
-
-    public StructureRotation getRotation() {
+    public Rotation getRotation() {
+        Random random = new Random();
         // Structure files should be saved with north direction as up.
         EnumSet<CardinalDirection> directions = this.getOpenWalls();
         return switch (getCellType()) {
             case CellType.STRAIGHT -> {
                 if (directions.contains(CardinalDirection.NORTH)) {
-                    yield StructureRotation.NONE;
+                    yield randomRotationFromList(EnumSet.of(Rotation.DEGREES_0, Rotation.DEGREES_180), random);
                 }
-                yield StructureRotation.CLOCKWISE_90;
+                yield randomRotationFromList(EnumSet.of(Rotation.DEGREES_90, Rotation.DEGREES_270), random);
             }
             case CellType.CORNER -> {
                 //North
                 if (directions.contains(CardinalDirection.NORTH)) {
                     if (directions.contains(CardinalDirection.EAST)) {
-                        yield StructureRotation.NONE;
+                        yield Rotation.DEGREES_0;
                     } //North-East
-                    yield StructureRotation.COUNTERCLOCKWISE_90;
+                    yield Rotation.DEGREES_270;
                 }
                 //South
                 else if (directions.contains(CardinalDirection.EAST)) {
-                    yield StructureRotation.CLOCKWISE_90;
+                    yield Rotation.DEGREES_90;
                 } //South-East
-                yield StructureRotation.CLOCKWISE_180; //South-East
+                yield Rotation.DEGREES_180; //South-East
             }
             case CellType.T_CROSS -> {
                 if (!directions.contains(CardinalDirection.SOUTH)) {
-                    yield StructureRotation.NONE;
+                    yield Rotation.DEGREES_0;
                 } else if (!directions.contains(CardinalDirection.WEST)) {
-                    yield StructureRotation.CLOCKWISE_90;
+                    yield Rotation.DEGREES_90;
                 } else if (!directions.contains(CardinalDirection.NORTH)) {
-                    yield StructureRotation.CLOCKWISE_180;
+                    yield Rotation.DEGREES_180;
                 }
-                yield StructureRotation.COUNTERCLOCKWISE_90;
+                yield Rotation.DEGREES_270;
             }
             case CellType.DEADEND -> {
                 if (directions.contains(CardinalDirection.NORTH)) {
-                    yield StructureRotation.NONE;
+                    yield Rotation.DEGREES_0;
                 } else if (directions.contains(CardinalDirection.EAST)) {
-                    yield StructureRotation.CLOCKWISE_90;
+                    yield Rotation.DEGREES_90;
                 } else if (directions.contains(CardinalDirection.SOUTH)) {
-                    yield StructureRotation.CLOCKWISE_180;
+                    yield Rotation.DEGREES_180;
                 }
-                yield StructureRotation.COUNTERCLOCKWISE_90;
+                yield Rotation.DEGREES_270;
             }
-            default -> {
-                int randomInt = (int) (Math.random() * 4);
-                yield StructureRotation.values()[randomInt];
-            }
+            default ->
+                    randomRotationFromList(EnumSet.of(Rotation.DEGREES_0, Rotation.DEGREES_180, Rotation.DEGREES_90, Rotation.DEGREES_270), random);
         };
+    }
+    private Rotation randomRotationFromList(EnumSet<Rotation> rotations, Random rn)
+    {
+        int size = rotations.size();
+        int item = rn.nextInt(size);
+        int i = 0;
+        for (Rotation rotation : rotations)
+        {
+            if (i == item)
+            {
+                return rotation;
+            }
+            i++;
+        }
+        return null;
     }
 }
