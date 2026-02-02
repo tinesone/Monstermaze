@@ -84,16 +84,16 @@ public class Cell {
             case CellType.CORNER -> {
                 //North
                 if (directions.contains(CardinalDirection.NORTH)) {
-                    if (directions.contains(CardinalDirection.EAST)) {
-                        yield Rotation.DEGREES_0;
+                    if (directions.contains(CardinalDirection.WEST)) {
+                        yield Rotation.DEGREES_0; //North-West
                     } //North-East
-                    yield Rotation.DEGREES_270;
+                    yield Rotation.DEGREES_90;
                 }
                 //South
                 else if (directions.contains(CardinalDirection.EAST)) {
-                    yield Rotation.DEGREES_90;
-                } //South-East
-                yield Rotation.DEGREES_180; //South-East
+                    yield Rotation.DEGREES_180; //South-East
+                }
+                yield Rotation.DEGREES_270; //South-West
             }
             case CellType.T_CROSS -> {
                 if (!directions.contains(CardinalDirection.SOUTH)) {
