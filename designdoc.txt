@@ -1,0 +1,20 @@
+Lobby:
+
+Parkour section
+
+Reward for parkour section is bow for pranking fellow players
+
+start game by walking into tower
+
+only random door is open
+
+Create empty world, and generate a maze in that world
+
+
+Monster:
+
+Warden:
+Can only see moving players
+Every few seconds nearby players beat heart, revealing location.
+
+Place skulk and skulk-shriekers for fast travel points and tripwires
