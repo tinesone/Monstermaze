@@ -5,8 +5,8 @@ lobby-spawn-location:
   yaw: -90
   pitch: 0
 
-lobby-parkour-location: #23.5 -38 9.5 -154 -4.5
-  x: -23.5
+lobby-parkour-location:
+  x: 23.5
   y: -38
   z: 9.5
   yaw: -154
