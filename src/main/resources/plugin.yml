@@ -6,6 +6,9 @@ author: tinesone
 api-version: '1.21.11'
 default-permission: op
 
+depend: [LibsDisguises]
+
 commands:
   generateMaze:
-    description: Generate a maze. Made for testing purposes
+    description: Generate a maze. Made for testing purposes. Will place in current world so be careful!!
+    usage: /generateMaze <x> <y> <z>

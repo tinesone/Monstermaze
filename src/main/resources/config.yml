@@ -11,3 +11,6 @@ lobby-parkour-location:
   z: 9.5
   yaw: -154
   pitch: -4.5
+
+lobby-start-doors: #Lower of 2 blocks
+  1:

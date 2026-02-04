@@ -5,11 +5,11 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
-public final class ConfigLocationReader
+public final class ConfigHelper
 {
     Plugin plugin;
 
-    public ConfigLocationReader(Plugin plugin)
+    public ConfigHelper(Plugin plugin)
     {
         this.plugin = plugin;
     }
