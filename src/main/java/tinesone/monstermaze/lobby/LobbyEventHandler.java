@@ -104,16 +104,16 @@ public final class LobbyEventHandler implements Listener
         if(!event.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)) return;
 
         MobDisguise sheepDisguise = new MobDisguise(DisguiseType.SHEEP);
-        sheepDisguise.canScaleDisguise();
-        sheepDisguise.setEntity(victim);
-        sheepDisguise.startDisguise();
+        victim.getAttribute(Attribute.SCALE).setBaseValue(0.5f);
         victim.playSound(victim.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, 2.0F, 1.0F);
         victim.playSound(victim.getLocation(), Sound.ENTITY_SHEEP_AMBIENT, 2.0F, 1.0F);
-        //victim.getAttribute(Attribute.SCALE).setBaseValue(0.5f);
+        sheepDisguise.getWatcher().setScale(1d);
+        sheepDisguise.setEntity(victim);
+        sheepDisguise.startDisguise();
         new DelayedTask(() ->{
             sheepDisguise.stopDisguise();
             sheepDisguise.removePlayer(victim);
-            //victim.getAttribute(Attribute.SCALE).setBaseValue(1f);
+            victim.getAttribute(Attribute.SCALE).setBaseValue(1f);
         }, 5*20);
 
     }
