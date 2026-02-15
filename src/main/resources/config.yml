@@ -1,16 +1,31 @@
-lobby-spawn-location:
+lobby-spawn-location: #Where should player spawn upon joining the server while no game is active
   x: -15.7
   y: -38
   z: 8.5
   yaw: -90
   pitch: 0
 
-lobby-parkour-location:
+lobby-parkour-location: #Where should the player teleport upon failing the parkour
   x: 23.5
   y: -38
   z: 9.5
   yaw: -154
   pitch: -4.5
 
-lobby-start-doors: #Lower of 2 blocks
+lobby-start-doors: #Should be a list of locations of lower blocks of doorways.
   1:
+    x: 8
+    y: -38
+    z: 5
+  2:
+    x: 11
+    y: -38
+    z: 8
+  3:
+    x: 8
+    y: -38
+    z: 11
+  4:
+    x: 5
+    y: -38
+    z: 8

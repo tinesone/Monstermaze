@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -22,7 +23,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import tinesone.monstermaze.util.ConfigHelper;
-import tinesone.monstermaze.util.DelayedTask;
+import tinesone.monstermaze.util.Task;
+
+import java.util.HashSet;
+import java.util.Random;
 
 public final class LobbyEventHandler implements Listener
 {
@@ -30,6 +34,8 @@ public final class LobbyEventHandler implements Listener
 
     private final Location spawnLocation;
     private final Location parkourStartLocation;
+
+    private HashSet<Task> taskList = new HashSet<Task>();
 
     public LobbyEventHandler(Plugin plugin)
     {
@@ -94,38 +100,74 @@ public final class LobbyEventHandler implements Listener
 
 
     @EventHandler
-    public void onPVPdamage(EntityDamageByEntityEvent event)
+    public void onProjectileHit(ProjectileHitEvent event)
     {
-        if(!(event.getEntity() instanceof Player victim && victim.getWorld() == plugin.getServer().getWorlds().getFirst())) return;
+        if(!(event.getEntity().getWorld() == plugin.getServer().getWorlds().getFirst())) return;
+
+        event.getEntity().remove();
+
+        if(!(event.getHitEntity() instanceof Player victim)) return;
         event.setCancelled(true);
-        event.getDamager().remove();
 
 
-        if(!event.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)) return;
+
 
         MobDisguise sheepDisguise = new MobDisguise(DisguiseType.SHEEP);
-        victim.getAttribute(Attribute.SCALE).setBaseValue(0.5f);
-        victim.playSound(victim.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, 2.0F, 1.0F);
-        victim.playSound(victim.getLocation(), Sound.ENTITY_SHEEP_AMBIENT, 2.0F, 1.0F);
+
+
+        sheepDisguise.canScaleDisguise();
         sheepDisguise.getWatcher().setScale(1d);
         sheepDisguise.setEntity(victim);
         sheepDisguise.startDisguise();
-        new DelayedTask(() ->{
+        victim.playSound(victim.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, 2.0F, 1.0F);
+        victim.playSound(victim.getLocation(), Sound.ENTITY_SHEEP_AMBIENT, 2.0F, 1.0F);
+        victim.getAttribute(Attribute.SCALE).setBaseValue(0.5f);
+        victim.sendMessage(Component.text()
+                .content("You are now a sheep!")
+                .color(NamedTextColor.GOLD)
+                .build());
+        taskList.add(new Task(() ->{
             sheepDisguise.stopDisguise();
             sheepDisguise.removePlayer(victim);
             victim.getAttribute(Attribute.SCALE).setBaseValue(1f);
-        }, 5*20);
+        }, 5*20));
 
+    }
+
+    @EventHandler
+    public void cancelPVP(EntityDamageByEntityEvent event)
+    {
+        if(!(event.getDamager() instanceof Player damager && damager.getWorld() == plugin.getServer().getWorlds().getFirst())) return;
+        event.setCancelled(true);
     }
 
     private void SetupLobbyPlayer(Player player)
     {
-        if (player.getWorld() != plugin.getServer().getWorlds().getFirst())
-            return;
+        if (player.getWorld() != plugin.getServer().getWorlds().getFirst()) return;
         player.getInventory().clear();
         player.teleport(spawnLocation);
         player.setGameMode(GameMode.ADVENTURE);
+
+        Location[] locations = new ConfigHelper(plugin).getLocations(player.getWorld(), "lobby-start-doors");
+
+        Random rnd = new Random();
+
+        assert locations != null;
+        int randomIndex = rnd.nextInt(locations.length);
+
+        //Location randomLocation = locations[randomIndex];
+        locations[randomIndex] = null;
+        new Task(() -> {
+
+            for (Location location : locations)
+            {
+                if (location == null) continue;
+                player.sendBlockChange(location, Material.STONE_BRICKS.createBlockData());
+                player.sendBlockChange(location.clone().add(0, 1, 0), Material.STONE_BRICKS.createBlockData());
+            }
+        }, 0, 1);
     }
+
 
     private void resetParkour(Player player)
     {

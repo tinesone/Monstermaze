@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import tinesone.monstermaze.commands.GenerateMazeCommand;
 import tinesone.monstermaze.levelbuilder.LevelBuilder;
 import tinesone.monstermaze.lobby.LobbyEventHandler;
-import tinesone.monstermaze.util.DelayedTask;
+import tinesone.monstermaze.util.Task;
 
 import java.util.Objects;
 
@@ -26,7 +26,7 @@ public class MonstermazePlugin extends JavaPlugin implements Listener
 
         this.getComponentLogger().info(Component.text("Successfully enabled Monstermaze plugin!!").color(NamedTextColor.GOLD));
 
-        new DelayedTask(this);
+        new Task(this);
     }
 
     @Override
