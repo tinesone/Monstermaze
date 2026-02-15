@@ -3,6 +3,7 @@ package tinesone.monstermaze.lobby;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
@@ -22,6 +23,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import tinesone.monstermaze.util.ConfigHelper;
 import tinesone.monstermaze.util.Task;
 
@@ -71,7 +74,7 @@ public final class LobbyEventHandler implements Listener
         if(event.getEntity().getWorld() != plugin.getServer().getWorlds().getFirst()) return;
         if(!(event.getEntity() instanceof Player player && event.getCause() == EntityDamageEvent.DamageCause.FALL)) return;
         event.setCancelled(true);
-        player.getInventory().clear();
+        setupLobbyItems(player);
         if(player.getLocation().add(0, -1, 0).getBlock().getType() != Material.BARRIER) return;
 
        resetParkour(player);
@@ -141,12 +144,27 @@ public final class LobbyEventHandler implements Listener
         event.setCancelled(true);
     }
 
+    @EventHandler
+    public void cancelEye(PlayerInteractEvent event)
+    {
+        Player player = event.getPlayer();
+        if(!(player.getWorld() == plugin.getServer().getWorlds().getFirst() && event.getItem().getType() == Material.ENDER_EYE)) return;
+
+        event.setCancelled(true);
+        player.sendMessage(Component.text().content("Not implemented yet!")
+                .color(NamedTextColor.DARK_RED)
+                .build());
+    }
+
+
     private void SetupLobbyPlayer(Player player)
     {
         if (player.getWorld() != plugin.getServer().getWorlds().getFirst()) return;
-        player.getInventory().clear();
+        setupLobbyItems(player);
         player.teleport(spawnLocation);
         player.setGameMode(GameMode.ADVENTURE);
+
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, PotionEffect.INFINITE_DURATION, 0, false, false));
 
         Location[] locations = new ConfigHelper(plugin).getLocations(player.getWorld(), "lobby-start-doors");
 
@@ -155,7 +173,7 @@ public final class LobbyEventHandler implements Listener
         assert locations != null;
         int randomIndex = rnd.nextInt(locations.length);
 
-        //Location randomLocation = locations[randomIndex];
+
         locations[randomIndex] = null;
         new Task(() -> {
 
@@ -193,5 +211,25 @@ public final class LobbyEventHandler implements Listener
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE);
         bow.setItemMeta(meta);
         return bow;
+    }
+
+    private void setupLobbyItems(Player player)
+    {
+        player.getInventory().clear();
+
+        ItemStack eye = new ItemStack(Material.ENDER_EYE);
+        ItemMeta meta = eye.getItemMeta();
+        meta.addItemFlags(ItemFlag.values());
+        meta.displayName(Component.text()
+                .content("Choose your class. Currently selected: ")
+                .color(NamedTextColor.GOLD)
+                .decoration(TextDecoration.ITALIC, false)
+                .append(Component.text("None")
+                        .decoration(TextDecoration.ITALIC, true)
+                        .color(NamedTextColor.DARK_RED))
+                .build());
+
+        eye.setItemMeta(meta);
+        player.getInventory().setItem(0, eye);
     }
 }
