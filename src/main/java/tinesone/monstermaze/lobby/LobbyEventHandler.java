@@ -3,7 +3,7 @@ package tinesone.monstermaze.lobby;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
@@ -19,6 +19,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -28,7 +29,9 @@ import org.bukkit.potion.PotionEffectType;
 import tinesone.monstermaze.util.ConfigHelper;
 import tinesone.monstermaze.util.Task;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 
 public final class LobbyEventHandler implements Listener
@@ -38,7 +41,9 @@ public final class LobbyEventHandler implements Listener
     private final Location spawnLocation;
     private final Location parkourStartLocation;
 
-    private HashSet<Task> taskList = new HashSet<Task>();
+    private HashSet<Task> taskList = new HashSet<>();
+
+    private Map<Player, Boolean> readyToStart = new HashMap<>();
 
     public LobbyEventHandler(Plugin plugin)
     {
@@ -160,12 +165,21 @@ public final class LobbyEventHandler implements Listener
     private void SetupLobbyPlayer(Player player)
     {
         if (player.getWorld() != plugin.getServer().getWorlds().getFirst()) return;
-        setupLobbyItems(player);
         player.teleport(spawnLocation);
         player.setGameMode(GameMode.ADVENTURE);
 
         player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, PotionEffect.INFINITE_DURATION, 0, false, false));
 
+        closeAllLobbyDoorToPlayer(player);
+
+        readyToStart.put(player, false);
+
+        setupLobbyItems(player);
+
+    }
+
+    private void openRandomLobbyDoorToPlayer(Player player)
+    {
         Location[] locations = new ConfigHelper(plugin).getLocations(player.getWorld(), "lobby-start-doors");
 
         Random rnd = new Random();
@@ -175,6 +189,21 @@ public final class LobbyEventHandler implements Listener
 
 
         locations[randomIndex] = null;
+        placeDoors(player, locations);
+    }
+
+    private void closeAllLobbyDoorToPlayer(Player player)
+    {
+        Location[] locations = new ConfigHelper(plugin).getLocations(player.getWorld(), "lobby-start-doors");
+
+
+        assert locations != null;
+
+        placeDoors(player, locations);
+    }
+
+    private void placeDoors(Player player, Location[] locations)
+    {
         new Task(() -> {
 
             for (Location location : locations)
@@ -230,6 +259,47 @@ public final class LobbyEventHandler implements Listener
                 .build());
 
         eye.setItemMeta(meta);
-        player.getInventory().setItem(0, eye);
+
+        player.getInventory().setItem(0, readyItem(readyToStart.get(player)));
+        player.getInventory().setItem(1, eye);
+    }
+
+    private ItemStack readyItem(Boolean isReady)
+    {
+        Material material;
+        TextComponent itemName;
+        if (isReady)
+        {
+            material = Material.EMERALD;
+            itemName = Component.text()
+                    .content("Ready!")
+                    .decoration(TextDecoration.ITALIC, false)
+                    .decoration(TextDecoration.BOLD, true)
+                    .color(NamedTextColor.GREEN)
+                    .build();
+        }
+        else
+        {
+            material = Material.BARRIER;
+            itemName = Component.text()
+                    .content("Ready?")
+                    .decoration(TextDecoration.ITALIC, false)
+                    .color(NamedTextColor.DARK_RED)
+                    .build();
+        }
+
+        ItemStack readyItem = new ItemStack(material);
+        ItemMeta meta = readyItem.getItemMeta();
+        meta.displayName(itemName);
+        readyItem.setItemMeta(meta);
+
+        return readyItem;
+    }
+
+    @EventHandler
+    public void onPlayerLeave(PlayerQuitEvent event)
+    {
+        Player player = event.getPlayer();
+        readyToStart.remove(player);
     }
 }

@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d7211e2-d036-4eec-93e9-53eefe5f3a22" name="Changes" comment="First half of Prim's Algorithm">
+    <list default="true" id="1d7211e2-d036-4eec-93e9-53eefe5f3a22" name="Changes" comment="Added saturation and class selector placeholder">
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tinesone/monstermaze/maze/Cell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tinesone/monstermaze/maze/Cell.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tinesone/monstermaze/maze/generators/Prims.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tinesone/monstermaze/maze/generators/Prims.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tinesone/monstermaze/lobby/LobbyEventHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tinesone/monstermaze/lobby/LobbyEventHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +33,17 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="monstermaze" type="f1a62948:ProjectNode" />
               </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="monstermaze" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="monstermaze" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
             </expand>
             <select />
           </tree_state>
@@ -43,9 +55,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
-        <option value="Enum" />
         <option value="Record" />
+        <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -64,17 +76,23 @@
     &quot;accountId&quot;: &quot;accc5de4-4b36-4f64-b228-d5edeee58b21&quot;
   }
 }</component>
-  <component name="GradleScriptDefinitionsStorage" workingDir="$PROJECT_DIR$" gradleHome="C:\Users\Martijn\.gradle\wrapper\dists\gradle-9.0.0-bin\d6wjpkvcgsg3oed0qlfss3wgl\gradle-9.0.0" javaHome="C:\Program Files\Java\jdk-22" gradleVersion="9.0.0" />
+  <component name="GradleScriptDefinitionsStorage" workingDir="$PROJECT_DIR$" gradleHome="C:\Users\Martijn\.gradle\wrapper\dists\gradle-9.0.0-bin\d6wjpkvcgsg3oed0qlfss3wgl\gradle-9.0.0" javaHome="C:\Users\Martijn\.jdks\ms-21.0.10" gradleVersion="9.0.0" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
   <component name="ProjectId" id="38PNxtyolSfwAD4XO5mcuNOrtrT" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Monstermaze [:tinesone.monstermaze.maze.Maze.main()].executor&quot;: &quot;Run&quot;,
     &quot;Gradle.Monstermaze [:tinesone.monstermaze.maze.generators.Prims.main()].executor&quot;: &quot;Run&quot;,
     &quot;Gradle.Upgrade Gradle wrapper.executor&quot;: &quot;Run&quot;,
     &quot;Gradle.monstermaze [assemble].executor&quot;: &quot;Run&quot;,
@@ -88,14 +106,23 @@
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Martijn/Documents/java projects/monstermaze&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.JAVA&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Martijn\IdeaProjects\Monstermaze\src\main\resources\structures" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="tinesone.monstermaze.lobby" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.monstermaze [build]">
     <configuration name="monstermaze [assemble]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -215,7 +242,34 @@
       <workItem from="1768708026106" duration="202000" />
       <workItem from="1768750470213" duration="2736000" />
       <workItem from="1768780634519" duration="5180000" />
-      <workItem from="1768814490607" duration="3364000" />
+      <workItem from="1768814490607" duration="3683000" />
+      <workItem from="1768849074364" duration="8814000" />
+      <workItem from="1769016929854" duration="5007000" />
+      <workItem from="1769034338246" duration="4786000" />
+      <workItem from="1769096983250" duration="3185000" />
+      <workItem from="1769102457448" duration="200000" />
+      <workItem from="1769960656978" duration="5579000" />
+      <workItem from="1769970216309" duration="3667000" />
+      <workItem from="1769978755579" duration="130000" />
+      <workItem from="1769988893087" duration="7973000" />
+      <workItem from="1770043904148" duration="2481000" />
+      <workItem from="1770046738428" duration="612000" />
+      <workItem from="1770051243130" duration="947000" />
+      <workItem from="1770057272740" duration="2054000" />
+      <workItem from="1770059767081" duration="2911000" />
+      <workItem from="1770142396748" duration="2515000" />
+      <workItem from="1770156101609" duration="5311000" />
+      <workItem from="1770162692284" duration="28000" />
+      <workItem from="1770167122797" duration="2855000" />
+      <workItem from="1770209326054" duration="5921000" />
+      <workItem from="1770230779641" duration="4554000" />
+      <workItem from="1770305210247" duration="2112000" />
+      <workItem from="1770389512833" duration="1089000" />
+      <workItem from="1771168620239" duration="7835000" />
+      <workItem from="1771187180532" duration="1998000" />
+      <workItem from="1771686408269" duration="6000" />
+      <workItem from="1778853491569" duration="1949000" />
+      <workItem from="1779895301963" duration="6758000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit.&#10;Layed grondwork for maze generating">
       <option name="closed" value="true" />
@@ -249,7 +303,175 @@
       <option name="project" value="LOCAL" />
       <updated>1768785829763</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Prim's Algorithm almost complete.">
+      <option name="closed" value="true" />
+      <created>1768818477530</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1768818477530</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Fully implemented Prim's Algorithm">
+      <option name="closed" value="true" />
+      <created>1768853057489</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1768853057489</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Added simple text representation of the Maze&#10;x: blocked cell&#10;-: straight path in cell&#10;L: bend in cell&#10;T: T-junction in cell&#10;+: Crossway in cell">
+      <option name="closed" value="true" />
+      <created>1768856011448</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1768856011448</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Made improvements according to feedback&#10;&#10;Remove coordinates from Cell.java&#10;Made Maze.java more about being a maze&#10;Remade MazeGenerator.java an interface instead of an abstract class&#10;&#10;Created MazeGeneratorBase.java&#10;&#10;Reworked Prims.java to work without Cell coordinates">
+      <option name="closed" value="true" />
+      <created>1769021969165</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1769021969165</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Started work on actually generating a maze ingame.&#10;&#10;It is currently broken.">
+      <option name="closed" value="true" />
+      <created>1769039244044</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1769039244044</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Continued work on ingame maze generator">
+      <option name="closed" value="true" />
+      <created>1769102519545</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1769102519545</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Made GenerateMazeCommand.java commandsender agnostic">
+      <option name="closed" value="true" />
+      <created>1769961306639</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1769961306640</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Added StructureAnchorExtractor.java.&#10;It finds a marker placed in the structure (a chain command block with just the text &quot;marker&quot;), which must be placed in the northwest corner of the structure, and returns the StructureAnchorPoint of that structure, using the marker.">
+      <option name="closed" value="true" />
+      <created>1769974295184</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1769974295184</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Added guard clause to StructureAnchorExtractor.java">
+      <option name="closed" value="true" />
+      <created>1769978858808</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1769978858808</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Made progress towards placing the structures the right way&#10;&#10;So close">
+      <option name="closed" value="true" />
+      <created>1769996935524</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1769996935524</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Removed attempting to rotate structures.&#10;&#10;Now just have to make 4 of each.&#10;Not being placed correctly just yet.">
+      <option name="closed" value="true" />
+      <created>1770061134377</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1770061134377</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Fully implemented custom maze generation.&#10;&#10;Fixed some rotation bugs and structures that where build incorrectly">
+      <option name="closed" value="true" />
+      <created>1770062468100</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1770062468100</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Fixed GenerateMazeCommand.java only working in specific world called &quot;world&quot;">
+      <option name="closed" value="true" />
+      <created>1770144802340</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1770144802340</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Added readme.md">
+      <option name="closed" value="true" />
+      <created>1770144819437</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1770144819437</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Started work on lobby system.&#10;Player will now be teleported to a configurable location in the lobby.">
+      <option name="closed" value="true" />
+      <created>1770161371022</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1770161371022</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Added config and disable message">
+      <option name="closed" value="true" />
+      <created>1770161396579</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1770161396579</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Added parkour reset for in the lobby">
+      <option name="closed" value="true" />
+      <created>1770169850607</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1770169850607</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Added Libsdisguises and a basic implementation of the lobby bow">
+      <option name="closed" value="true" />
+      <created>1770235309825</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1770235309825</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Added reaping tasks, reverted to libsdisguises, added default locations to config.yml for vanishing doors, added nested location support for ConfigHelper.java, added vanashing doors to LobbyEventHandler.java&#10;&#10;Large comit this one">
+      <option name="closed" value="true" />
+      <created>1771176170430</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1771176170430</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Removed leftover ParkourManager.java">
+      <option name="closed" value="true" />
+      <created>1771176223741</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1771176223741</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Added saturation and class selector placeholder">
+      <option name="closed" value="true" />
+      <created>1771189189561</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1771189189562</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -275,7 +497,28 @@
     <MESSAGE value="Updated .gitignore&#10;this time for sure" />
     <MESSAGE value="Started work in of implementing Prim's algorithm" />
     <MESSAGE value="First half of Prim's Algorithm" />
-    <option name="LAST_COMMIT_MESSAGE" value="First half of Prim's Algorithm" />
+    <MESSAGE value="Prim's Algorithm almost complete." />
+    <MESSAGE value="Fully implemented Prim's Algorithm" />
+    <MESSAGE value="Added simple text representation of the Maze&#10;x: blocked cell&#10;-: straight path in cell&#10;L: bend in cell&#10;T: T-junction in cell&#10;+: Crossway in cell" />
+    <MESSAGE value="Made improvements according to feedback&#10;&#10;Remove coordinates from Cell.java&#10;Made Maze.java more about being a maze&#10;Remade MazeGenerator.java an interface instead of an abstract class&#10;&#10;Created MazeGeneratorBase.java&#10;&#10;Reworked Prims.java to work without Cell coordinates" />
+    <MESSAGE value="Started work on actually generating a maze ingame.&#10;&#10;It is currently broken." />
+    <MESSAGE value="Continued work on ingame maze generator" />
+    <MESSAGE value="Made GenerateMazeCommand.java commandsender agnostic" />
+    <MESSAGE value="Added StructureAnchorExtractor.java.&#10;It finds a marker placed in the structure (a chain command block with just the text &quot;marker&quot;), which must be placed in the northwest corner of the structure, and returns the StructureAnchorPoint of that structure, using the marker." />
+    <MESSAGE value="Added guard clause to StructureAnchorExtractor.java" />
+    <MESSAGE value="Made progress towards placing the structures the right way&#10;&#10;So close" />
+    <MESSAGE value="Removed attempting to rotate structures.&#10;&#10;Now just have to make 4 of each.&#10;Not being placed correctly just yet." />
+    <MESSAGE value="Fully implemented custom maze generation.&#10;&#10;Fixed some rotation bugs and structures that where build incorrectly" />
+    <MESSAGE value="Fixed GenerateMazeCommand.java only working in specific world called &quot;world&quot;" />
+    <MESSAGE value="Added readme.md" />
+    <MESSAGE value="Started work on lobby system.&#10;Player will now be teleported to a configurable location in the lobby." />
+    <MESSAGE value="Added config and disable message" />
+    <MESSAGE value="Added parkour reset for in the lobby" />
+    <MESSAGE value="Added Libsdisguises and a basic implementation of the lobby bow" />
+    <MESSAGE value="Added reaping tasks, reverted to libsdisguises, added default locations to config.yml for vanishing doors, added nested location support for ConfigHelper.java, added vanashing doors to LobbyEventHandler.java&#10;&#10;Large comit this one" />
+    <MESSAGE value="Removed leftover ParkourManager.java" />
+    <MESSAGE value="Added saturation and class selector placeholder" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added saturation and class selector placeholder" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
