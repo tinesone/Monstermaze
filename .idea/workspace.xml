@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d7211e2-d036-4eec-93e9-53eefe5f3a22" name="Changes" comment="Added saturation and class selector placeholder">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="1d7211e2-d036-4eec-93e9-53eefe5f3a22" name="Changes" comment="Added Ready item">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tinesone/monstermaze/lobby/LobbyEventHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tinesone/monstermaze/lobby/LobbyEventHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -269,7 +270,11 @@
       <workItem from="1771187180532" duration="1998000" />
       <workItem from="1771686408269" duration="6000" />
       <workItem from="1778853491569" duration="1949000" />
-      <workItem from="1779895301963" duration="6758000" />
+      <workItem from="1779895301963" duration="7086000" />
+      <workItem from="1782483429246" duration="204000" />
+      <workItem from="1783631532277" duration="1547000" />
+      <workItem from="1783634180630" duration="2149000" />
+      <workItem from="1783690894496" duration="1172000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit.&#10;Layed grondwork for maze generating">
       <option name="closed" value="true" />
@@ -471,7 +476,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771189189562</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Added Ready item">
+      <option name="closed" value="true" />
+      <created>1779905483095</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1779905483095</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -493,7 +506,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Initial Commit.&#10;Layed grondwork for maze generating" />
     <MESSAGE value="Updated .gitignore&#10;this time for sure" />
     <MESSAGE value="Started work in of implementing Prim's algorithm" />
     <MESSAGE value="First half of Prim's Algorithm" />
@@ -518,7 +530,8 @@
     <MESSAGE value="Added reaping tasks, reverted to libsdisguises, added default locations to config.yml for vanishing doors, added nested location support for ConfigHelper.java, added vanashing doors to LobbyEventHandler.java&#10;&#10;Large comit this one" />
     <MESSAGE value="Removed leftover ParkourManager.java" />
     <MESSAGE value="Added saturation and class selector placeholder" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added saturation and class selector placeholder" />
+    <MESSAGE value="Added Ready item" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Ready item" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

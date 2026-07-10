@@ -1,7 +1,6 @@
 package tinesone.monstermaze.lobby;
 
-import me.libraryaddict.disguise.disguisetypes.DisguiseType;
-import me.libraryaddict.disguise.disguisetypes.MobDisguise;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -110,36 +109,7 @@ public final class LobbyEventHandler implements Listener
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event)
     {
-        if(!(event.getEntity().getWorld() == plugin.getServer().getWorlds().getFirst())) return;
-
-        event.getEntity().remove();
-
-        if(!(event.getHitEntity() instanceof Player victim)) return;
-        event.setCancelled(true);
-
-
-
-
-        MobDisguise sheepDisguise = new MobDisguise(DisguiseType.SHEEP);
-
-
-        sheepDisguise.canScaleDisguise();
-        sheepDisguise.getWatcher().setScale(1d);
-        sheepDisguise.setEntity(victim);
-        sheepDisguise.startDisguise();
-        victim.playSound(victim.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, 2.0F, 1.0F);
-        victim.playSound(victim.getLocation(), Sound.ENTITY_SHEEP_AMBIENT, 2.0F, 1.0F);
-        victim.getAttribute(Attribute.SCALE).setBaseValue(0.5f);
-        victim.sendMessage(Component.text()
-                .content("You are now a sheep!")
-                .color(NamedTextColor.GOLD)
-                .build());
-        taskList.add(new Task(() ->{
-            sheepDisguise.stopDisguise();
-            sheepDisguise.removePlayer(victim);
-            victim.getAttribute(Attribute.SCALE).setBaseValue(1f);
-        }, 5*20));
-
+        //TODO: add sheep disguise
     }
 
     @EventHandler

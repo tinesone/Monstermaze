@@ -1,12 +1,11 @@
 name: Monstermaze
 version: 1.0.0
 main: tinesone.monstermaze.MonstermazePlugin
-description: PVP gamemode in a maze
+description: Asymmetrical pvp minigame
 author: tinesone
-api-version: '1.21.11'
+api-version: '26.1'
 default-permission: op
 
-depend: [LibsDisguises]
 
 commands:
   generateMaze:
