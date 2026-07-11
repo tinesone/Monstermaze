@@ -123,7 +123,7 @@ public final class LobbyEventHandler implements Listener
     public void cancelEye(PlayerInteractEvent event)
     {
         Player player = event.getPlayer();
-        if(!(player.getWorld() == plugin.getServer().getWorlds().getFirst() && event.getItem().getType() == Material.ENDER_EYE)) return;
+        if(!(player.getWorld() == plugin.getServer().getWorlds().getFirst() && (event.getItem() != null ? event.getItem().getType() : null) == Material.ENDER_EYE)) return;
 
         event.setCancelled(true);
         player.sendMessage(Component.text().content("Not implemented yet!")

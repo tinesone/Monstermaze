@@ -5,8 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1d7211e2-d036-4eec-93e9-53eefe5f3a22" name="Changes" comment="Updated to minecraft version 26&#10;removed libdisguises, going for a NMS approach (wish me luck)">
-      <change afterPath="$PROJECT_DIR$/src/main/java/tinesone/monstermaze/disguise/MobDisguise.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tinesone/monstermaze/commands/DisguiseTestCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tinesone/monstermaze/MonstermazePlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tinesone/monstermaze/MonstermazePlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tinesone/monstermaze/disguise/MobDisguise.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tinesone/monstermaze/disguise/MobDisguise.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tinesone/monstermaze/lobby/LobbyEventHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tinesone/monstermaze/lobby/LobbyEventHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,6 +81,69 @@
   }
 }</component>
   <component name="GradleScriptDefinitionsStorage" workingDir="$PROJECT_DIR$" gradleHome="C:\Users\Martijn\.gradle\wrapper\dists\gradle-9.0.0-bin\d6wjpkvcgsg3oed0qlfss3wgl\gradle-9.0.0" javaHome="C:\Users\Martijn\.jdks\ms-21.0.10" gradleVersion="9.0.0" />
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0000000302183474" />
+      <entry key="MS500" value="1.03159393714575" />
+      <entry key="S2" value="1.6723713597458638" />
+      <entry key="S5" value="2.9142261213647696" />
+      <entry key="S10" value="4.391468352965797" />
+      <entry key="S30" value="8.027360195053214" />
+      <entry key="S60" value="12.032492238312981" />
+      <entry key="M2" value="19.177145818079644" />
+      <entry key="M5" value="37.94222182184831" />
+      <entry key="M10" value="65.54252472508385" />
+      <entry key="M15" value="88.58332585244467" />
+      <entry key="M30" value="132.4027148587022" />
+      <entry key="H1" value="169.59387374316375" />
+      <entry key="H2" value="194.45640938449856" />
+      <entry key="H4" value="208.93052550503958" />
+      <entry key="D1" value="222.20255453572125" />
+      <entry key="W1" value="224.5973287238824" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="6.428901632295221E-298" />
+      <entry key="MS500" value="3.64441106158703E-60" />
+      <entry key="S2" value="1.3816779990485124E-15" />
+      <entry key="S5" value="1.1386942233561476E-6" />
+      <entry key="S10" value="0.0010945085085537754" />
+      <entry key="S30" value="0.14517159380982972" />
+      <entry key="S60" value="0.6162900013710219" />
+      <entry key="M2" value="1.4705445059209952" />
+      <entry key="M5" value="3.4825477369781557" />
+      <entry key="M10" value="6.504316852104367" />
+      <entry key="M15" value="8.986152221431126" />
+      <entry key="M30" value="13.592441352226944" />
+      <entry key="H1" value="17.41424918979522" />
+      <entry key="H2" value="19.93474603691487" />
+      <entry key="H4" value="21.391297909952318" />
+      <entry key="D1" value="22.7205547382286" />
+      <entry key="W1" value="22.959791248286763" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="8.909995845902577E-8" />
+      <entry key="MS500" value="0.039233177455280925" />
+      <entry key="S2" value="0.7418610932745101" />
+      <entry key="S5" value="2.18454542094996" />
+      <entry key="S10" value="3.8317985520413638" />
+      <entry key="S30" value="7.821465835519902" />
+      <entry key="S60" value="12.400736303380974" />
+      <entry key="M2" value="20.470597152758625" />
+      <entry key="M5" value="41.30101693210973" />
+      <entry key="M10" value="71.94643998406612" />
+      <entry key="M15" value="97.48136362285506" />
+      <entry key="M30" value="145.93106389364" />
+      <entry key="H1" value="186.96757189179436" />
+      <entry key="H2" value="214.3680310296527" />
+      <entry key="H4" value="230.30943058375055" />
+      <entry key="D1" value="244.92091670405284" />
+      <entry key="W1" value="247.55680346941" />
+    </decayedShown>
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -86,32 +155,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Monstermaze [:tinesone.monstermaze.maze.Maze.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Monstermaze [:tinesone.monstermaze.maze.generators.Prims.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Upgrade Gradle wrapper.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.monstermaze [assemble].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.monstermaze [build].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.monstermaze [jar].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Martijn/Documents/java projects/monstermaze&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "Gradle.Download Sources.executor": "Run",
+    "Gradle.Monstermaze [:tinesone.monstermaze.maze.Maze.main()].executor": "Run",
+    "Gradle.Monstermaze [:tinesone.monstermaze.maze.generators.Prims.main()].executor": "Run",
+    "Gradle.Upgrade Gradle wrapper.executor": "Run",
+    "Gradle.monstermaze [assemble].executor": "Run",
+    "Gradle.monstermaze [build].executor": "Run",
+    "Gradle.monstermaze [jar].executor": "Run",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Martijn/Documents/java projects/monstermaze",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Global Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Martijn\IdeaProjects\Monstermaze\src\main\resources\structures" />
@@ -210,16 +287,16 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.monstermaze [build]" />
-        <item itemvalue="Gradle.monstermaze [assemble]" />
         <item itemvalue="Gradle.monstermaze [jar]" />
+        <item itemvalue="Gradle.monstermaze [assemble]" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-26cb7f24e5b0-intellij.indexing.shared.core-IU-253.29346.240" />
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.29346.240" />
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.24374.151" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.24374.151" />
       </set>
     </attachedChunks>
   </component>
@@ -272,6 +349,8 @@
       <workItem from="1783631532277" duration="1547000" />
       <workItem from="1783634180630" duration="2149000" />
       <workItem from="1783690894496" duration="6251000" />
+      <workItem from="1783772831052" duration="63000" />
+      <workItem from="1783772949727" duration="1093000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit.&#10;Layed grondwork for maze generating">
       <option name="closed" value="true" />

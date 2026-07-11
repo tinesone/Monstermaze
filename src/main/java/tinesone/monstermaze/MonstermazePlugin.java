@@ -6,6 +6,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import tinesone.monstermaze.commands.DisguiseTestCommand;
 import tinesone.monstermaze.commands.GenerateMazeCommand;
 import tinesone.monstermaze.levelbuilder.LevelBuilder;
 import tinesone.monstermaze.lobby.LobbyEventHandler;
@@ -21,6 +22,7 @@ public class MonstermazePlugin extends JavaPlugin implements Listener
         saveDefaultConfig();
         LevelBuilder levelBuilder = new LevelBuilder(this);
         Objects.requireNonNull(getCommand("generateMaze")).setExecutor(new GenerateMazeCommand(this, levelBuilder));
+        Objects.requireNonNull(getCommand("disguise")).setExecutor(new DisguiseTestCommand(this));
 
         Bukkit.getPluginManager().registerEvents(new LobbyEventHandler(this), this);
 
