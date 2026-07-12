@@ -39,6 +39,7 @@ public final class LobbyEventHandler implements Listener
 
     private final Location spawnLocation;
     private final Location parkourStartLocation;
+    private final Location[] doorLocations;
 
     private HashSet<Task> taskList = new HashSet<>();
 
@@ -49,9 +50,9 @@ public final class LobbyEventHandler implements Listener
         this.plugin = plugin;
         World lobby = plugin.getServer().getWorlds().getFirst();
 
-        ConfigHelper configReader = new ConfigHelper(plugin);
-        this.spawnLocation = configReader.getLocation(lobby, "lobby-spawn-location");
-        this.parkourStartLocation = configReader.getLocation(lobby, "lobby-parkour-location");
+        this.spawnLocation = ConfigHelper.getLocation(lobby, "lobby-spawn-location");
+        this.parkourStartLocation = ConfigHelper.getLocation(lobby, "lobby-parkour-location");
+        this.doorLocations = ConfigHelper.getLocations(lobby, "lobby-start-doors");
     }
 
 
@@ -105,7 +106,6 @@ public final class LobbyEventHandler implements Listener
         event.setCancelled(true);
     }
 
-
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event)
     {
@@ -140,7 +140,7 @@ public final class LobbyEventHandler implements Listener
 
         player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, PotionEffect.INFINITE_DURATION, 0, false, false));
 
-        closeAllLobbyDoorToPlayer(player);
+        placeDoors(player, doorLocations);
 
         readyToStart.put(player, false);
 
@@ -150,27 +150,17 @@ public final class LobbyEventHandler implements Listener
 
     private void openRandomLobbyDoorToPlayer(Player player)
     {
-        Location[] locations = new ConfigHelper(plugin).getLocations(player.getWorld(), "lobby-start-doors");
-
         Random rnd = new Random();
 
-        assert locations != null;
-        int randomIndex = rnd.nextInt(locations.length);
+        assert doorLocations != null;
+        int randomIndex = rnd.nextInt(doorLocations.length);
 
 
-        locations[randomIndex] = null;
-        placeDoors(player, locations);
+        doorLocations[randomIndex] = null;
+        placeDoors(player, doorLocations);
     }
 
-    private void closeAllLobbyDoorToPlayer(Player player)
-    {
-        Location[] locations = new ConfigHelper(plugin).getLocations(player.getWorld(), "lobby-start-doors");
 
-
-        assert locations != null;
-
-        placeDoors(player, locations);
-    }
 
     private void placeDoors(Player player, Location[] locations)
     {

@@ -1,28 +1,27 @@
 package tinesone.monstermaze.util;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashSet;
-import java.util.List;
+
 
 public final class ConfigHelper
 {
-    Plugin plugin;
 
-    public ConfigHelper(Plugin plugin)
+    public static Location getLocation(World world, String locationNameInConfig)
     {
-        this.plugin = plugin;
-    }
-
-    public Location getLocation(World world, String locationNameInConfig)
-    {
+        Plugin plugin = Bukkit.getPluginManager().getPlugin("Monstermaze");
         Location location;
-        ConfigurationSection configurationSection = plugin.getConfig().getConfigurationSection(locationNameInConfig);
+        ConfigurationSection configurationSection;
         try
         {
+            assert plugin != null;
+            configurationSection = plugin.getConfig().getConfigurationSection(locationNameInConfig);
+            assert configurationSection != null;
             double x = configurationSection.getDouble("x");
             double y = configurationSection.getDouble("y");
             double z = configurationSection.getDouble("z");
@@ -38,10 +37,21 @@ public final class ConfigHelper
         return location;
     }
 
-    public Location[] getLocations(World world, String locationNameInConfig)
+    public static Location[] getLocations(World world, String locationNameInConfig)
     {
+        Plugin plugin = Bukkit.getPluginManager().getPlugin("Monstermaze");
         HashSet<Location> locations = new HashSet<>();
-        ConfigurationSection configurationSection = plugin.getConfig().getConfigurationSection(locationNameInConfig);
+        ConfigurationSection configurationSection;
+        try
+        {
+            assert plugin != null;
+            configurationSection = plugin.getConfig().getConfigurationSection(locationNameInConfig);
+            assert configurationSection != null;
+        } catch (NullPointerException e)
+        {
+            plugin.getComponentLogger().warn("Something went wrong with reading the config");
+            return null;
+        }
         for (String configLocation : configurationSection.getKeys(false))
         {
             try
