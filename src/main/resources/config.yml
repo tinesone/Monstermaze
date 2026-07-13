@@ -29,3 +29,6 @@ lobby-start-doors: #Should be a list of locations of lower blocks of doorways.
     x: 5
     y: -38
     z: 8
+
+#Duration of sheep morph in seconds
+lobby-sheep-morph-duration: 10

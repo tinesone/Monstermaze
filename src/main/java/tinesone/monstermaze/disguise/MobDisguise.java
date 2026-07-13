@@ -25,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import tinesone.monstermaze.util.NmsHelper;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,6 +39,8 @@ public class MobDisguise implements Listener
     private int taskId;
     private boolean enabled = false;
 
+    private static HashSet<Player> currentDisguised = new HashSet<>();
+
 
     public MobDisguise(Plugin plugin, Player target, EntityType disguiseType)
     {
@@ -45,7 +48,6 @@ public class MobDisguise implements Listener
         this.player = target;
         this.disguiseType = disguiseType;
         this.plugin = plugin;
-
     }
 
     public MobDisguise(Plugin plugin, Player target, EntityType disguiseType, boolean enable)
@@ -59,10 +61,13 @@ public class MobDisguise implements Listener
 
     public void enableDisguise()
     {
+        if (isPlayerDisguised(player))
+            return;
         if (enabled)
             return;
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
         enabled = true;
+        currentDisguised.add(player);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
         var others = getViewers();
 
@@ -76,6 +81,7 @@ public class MobDisguise implements Listener
         if (!enabled)
             return;
         enabled = false;
+        currentDisguised.remove(player);
         Bukkit.getScheduler().cancelTask(taskId);
         getViewers().forEach(this::revealPlayerToViewer);
         HandlerList.unregisterAll(this);
@@ -197,5 +203,8 @@ public class MobDisguise implements Listener
     {
         return enabled;
     }
-
+    public static boolean isPlayerDisguised(Player player)
+    {
+        return currentDisguised.contains(player);
+    }
 }

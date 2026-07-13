@@ -68,4 +68,11 @@ public final class ConfigHelper
         }
         return locations.toArray(new Location[0]);
     }
+
+    public static long getLong(String longNameInConfig)
+    {
+        Plugin plugin = Bukkit.getPluginManager().getPlugin("Monstermaze");
+        assert plugin != null;
+        return plugin.getConfig().getLong(longNameInConfig);
+    }
 }

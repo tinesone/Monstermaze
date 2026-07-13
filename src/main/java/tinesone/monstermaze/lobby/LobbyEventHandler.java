@@ -8,6 +8,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,6 +26,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import tinesone.monstermaze.disguise.MobDisguise;
 import tinesone.monstermaze.util.ConfigHelper;
 import tinesone.monstermaze.util.Task;
 
@@ -109,7 +111,12 @@ public final class LobbyEventHandler implements Listener
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event)
     {
-        //TODO: add sheep disguise
+        if (!(event.getHitEntity() instanceof Player) && event.getEntity().getWorld() != plugin.getServer().getWorlds().getFirst()) return;
+        event.getEntity().remove();
+        event.setCancelled(true);
+        MobDisguise disguise = new MobDisguise(plugin, (Player) event.getHitEntity(), EntityType.SHEEP, true);
+        long duration = ConfigHelper.getLong("lobby-sheep-morph-duration")*20; //20 ticks in each second
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, disguise::disableDisguise, duration);
     }
 
     @EventHandler
