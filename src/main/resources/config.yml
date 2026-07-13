@@ -1,18 +1,21 @@
-lobby-spawn-location: #Where should player spawn upon joining the server while no game is active
+#Where should player spawn upon joining the server while no game is active
+lobby-spawn-location:
   x: -15.7
   y: -38
   z: 8.5
   yaw: -90
   pitch: 0
 
-lobby-parkour-location: #Where should the player teleport upon failing the parkour
+#Where should the player teleport upon failing the parkour
+lobby-parkour-location:
   x: 23.5
   y: -38
   z: 9.5
   yaw: -154
   pitch: -4.5
 
-lobby-start-doors: #Should be a list of locations of lower blocks of doorways.
+#Should be a list of locations of lower blocks of doorways.
+lobby-start-doors:
   1:
     x: 8
     y: -38
@@ -32,3 +35,8 @@ lobby-start-doors: #Should be a list of locations of lower blocks of doorways.
 
 #Duration of sheep morph in seconds
 lobby-sheep-morph-duration: 10
+
+#What size should the player scale to when morphed into a mob. If a mob is not listed here (or spelled incorrectly), 1 will be used
+disguise-scales:
+  sheep: 0.5
+  wither_skeleton: 1.25

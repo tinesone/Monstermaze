@@ -12,6 +12,7 @@ import net.minecraft.world.entity.PositionMoveRotation;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.entity.CraftEntityType;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
@@ -24,11 +25,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import tinesone.monstermaze.util.ConfigHelper;
 import tinesone.monstermaze.util.NmsHelper;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class MobDisguise implements Listener
 {
@@ -39,6 +39,7 @@ public class MobDisguise implements Listener
     private final Plugin plugin;
     private int taskId;
     private boolean enabled = false;
+    private float scale = 1f;
 
     private final static HashSet<Player> currentDisguised = new HashSet<>();
 
@@ -49,6 +50,17 @@ public class MobDisguise implements Listener
         this.player = target;
         this.disguiseType = disguiseType;
         this.plugin = plugin;
+
+        setScale(disguiseType);
+    }
+
+    private void setScale(EntityType disguiseType)
+    {
+        String configLocation = "disguise-scales";
+        if (ConfigHelper.getScaleValues(configLocation).containsKey(disguiseType.toString().toLowerCase()))
+        {
+            scale = (float) ConfigHelper.getScaleValues(configLocation).get(disguiseType.toString().toLowerCase()).doubleValue();
+        }
     }
 
     public MobDisguise(Plugin plugin, Player target, EntityType disguiseType, boolean enable)
@@ -70,6 +82,8 @@ public class MobDisguise implements Listener
         currentDisguised.add(player);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
+        Objects.requireNonNull(player.getAttribute(Attribute.SCALE)).setBaseValue(scale);
+
         var others = getViewers();
 
         others.forEach(this::disguisePlayerToViewer);
@@ -84,6 +98,10 @@ public class MobDisguise implements Listener
         enabled = false;
         currentDisguised.remove(player);
         Bukkit.getScheduler().cancelTask(taskId);
+
+        float BASE_SCALE = 1f;
+        Objects.requireNonNull(player.getAttribute(Attribute.SCALE)).setBaseValue(BASE_SCALE);
+
         getViewers().forEach(this::revealPlayerToViewer);
         HandlerList.unregisterAll(this);
     }

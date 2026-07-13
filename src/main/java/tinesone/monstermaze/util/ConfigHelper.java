@@ -6,7 +6,9 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 
 public final class ConfigHelper
@@ -74,5 +76,16 @@ public final class ConfigHelper
         Plugin plugin = Bukkit.getPluginManager().getPlugin("Monstermaze");
         assert plugin != null;
         return plugin.getConfig().getLong(longNameInConfig);
+    }
+
+    public static Map<String, Double> getScaleValues(String scalesInConfig)
+    {
+        Plugin plugin = Bukkit.getPluginManager().getPlugin("Monstermaze");
+        assert plugin != null;
+        ConfigurationSection configurationSection =  plugin.getConfig().getConfigurationSection(scalesInConfig);
+        assert configurationSection != null;
+        Map<String, Double> scales = new HashMap<>();
+        configurationSection.getKeys(false).forEach(key -> {scales.put(key, configurationSection.getDouble(key));});
+        return scales;
     }
 }
