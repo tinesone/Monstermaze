@@ -116,7 +116,7 @@ public class MobDisguise implements Listener
     @EventHandler
     public void syncPunch(PlayerInteractEvent event)
     {
-        if (event.getPlayer() != player || event.getAction() != Action.LEFT_CLICK_AIR) return;
+        if (event.getPlayer() != player || (event.getAction() != Action.LEFT_CLICK_AIR && event.getAction() != Action.LEFT_CLICK_BLOCK)) return;
         updatePlayerDisguiseAnimation(getViewers(), 0);
     }
 
