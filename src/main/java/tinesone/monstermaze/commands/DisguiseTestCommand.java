@@ -36,7 +36,7 @@ public class DisguiseTestCommand implements CommandExecutor
             return false;
         }
         MobDisguise disguise = new MobDisguise(plugin, player, type, true);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, disguise::disableDisguise, 500L);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, disguise::disableDisguise, 150L);
         return true;
     }
 }

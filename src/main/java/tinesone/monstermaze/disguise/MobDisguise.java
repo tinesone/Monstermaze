@@ -1,21 +1,27 @@
 package tinesone.monstermaze.disguise;
 
+import com.mojang.datafixers.util.Pair;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.PositionMoveRotation;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.entity.CraftEntityType;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import tinesone.monstermaze.util.NmsHelper;
 
@@ -40,7 +46,6 @@ public class MobDisguise implements Listener
         this.disguiseType = disguiseType;
         this.plugin = plugin;
 
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     public MobDisguise(Plugin plugin, Player target, EntityType disguiseType, boolean enable)
@@ -56,11 +61,12 @@ public class MobDisguise implements Listener
     {
         if (enabled)
             return;
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
         enabled = true;
 
         var others = getViewers();
 
-        others.forEach(this::disguisePlayer);
+        others.forEach(this::disguisePlayerToViewer);
 
         taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> updatePlayerDisguisePosition(others), 2L, 1L);
     }
@@ -71,16 +77,18 @@ public class MobDisguise implements Listener
             return;
         enabled = false;
         Bukkit.getScheduler().cancelTask(taskId);
-        Packet<?> removePacket = new ClientboundRemoveEntitiesPacket(id);
-        for (Player viewer : plugin.getServer().getOnlinePlayers())
-        {
-            if (viewer == player) continue;
-            viewer.showPlayer(plugin, player);
-            NmsHelper.sendPacketToBukkitPlayer(viewer, removePacket);
-        }
+        getViewers().forEach(this::revealPlayerToViewer);
+        HandlerList.unregisterAll(this);
     }
 
-    private void disguisePlayer(Player v)
+    private void revealPlayerToViewer(Player v)
+    {
+        Packet<?> removePacket = new ClientboundRemoveEntitiesPacket(id);
+        v.showPlayer(plugin, player);
+        NmsHelper.sendPacketToBukkitPlayer(v, removePacket);
+    }
+
+    private void disguisePlayerToViewer(Player v)
     {
         Packet<?> spawnPacket = new ClientboundAddEntityPacket(
                 this.id,
@@ -116,14 +124,33 @@ public class MobDisguise implements Listener
     @EventHandler
     public void syncPunch(PlayerInteractEvent event)
     {
+        if (!enabled) return;
         if (event.getPlayer() != player || (event.getAction() != Action.LEFT_CLICK_AIR && event.getAction() != Action.LEFT_CLICK_BLOCK)) return;
         updatePlayerDisguiseAnimation(getViewers(), 0);
+    }
+
+    @EventHandler
+    public void syncHeldItem(PlayerItemHeldEvent event)
+    {
+        if (!enabled) return;
+        if (event.getPlayer() != player) return;
+        ItemStack heldItem = player.getInventory().getItem(event.getNewSlot());
+        if (heldItem == null) return;
+        //plugin.getComponentLogger().info(heldItem.toString());
+        updatePlayerDisguiseHeldItem(getViewers(), heldItem);
     }
 
     private void updatePlayerDisguiseAnimation(List<? extends Player> others, int animationNum)
     {
         Packet<?> punchPacket = buildAnimatePacket(animationNum);
         others.forEach(v -> NmsHelper.sendPacketToBukkitPlayer(v, punchPacket));
+    }
+
+    private void updatePlayerDisguiseHeldItem(List<? extends Player> others, ItemStack itemStack)
+    {
+        net.minecraft.world.item.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack); //Same name, very nice :/
+        Packet<?> equipmentPacket = new ClientboundSetEquipmentPacket(id, List.of(new Pair<>(EquipmentSlot.MAINHAND, nmsItemStack)));
+        others.forEach(v -> NmsHelper.sendPacketToBukkitPlayer(v, equipmentPacket));
     }
 
     private ClientboundAnimatePacket buildAnimatePacket(int animationNum)
