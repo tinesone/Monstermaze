@@ -11,6 +11,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.PositionMoveRotation;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftEntityType;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
@@ -39,7 +40,7 @@ public class MobDisguise implements Listener
     private int taskId;
     private boolean enabled = false;
 
-    private static HashSet<Player> currentDisguised = new HashSet<>();
+    private final static HashSet<Player> currentDisguised = new HashSet<>();
 
 
     public MobDisguise(Plugin plugin, Player target, EntityType disguiseType)
@@ -141,8 +142,11 @@ public class MobDisguise implements Listener
         if (!enabled) return;
         if (event.getPlayer() != player) return;
         ItemStack heldItem = player.getInventory().getItem(event.getNewSlot());
-        if (heldItem == null) return;
-        //plugin.getComponentLogger().info(heldItem.toString());
+        if (heldItem == null)
+        {
+            updatePlayerDisguiseHeldItem(getViewers(), ItemStack.of(Material.AIR));
+            return;
+        }
         updatePlayerDisguiseHeldItem(getViewers(), heldItem);
     }
 
