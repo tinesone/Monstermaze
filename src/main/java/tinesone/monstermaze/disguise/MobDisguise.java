@@ -1,25 +1,28 @@
 package tinesone.monstermaze.disguise;
 
+import io.netty.buffer.Unpooled;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.network.protocol.game.ClientboundEntityPositionSyncPacket;
-import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
+import net.minecraft.network.protocol.game.*;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.PositionMoveRotation;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.entity.CraftEntityType;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-//import org.bukkit.event.EventHandler;
-//import org.bukkit.event.Listener;
-//import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.Plugin;
 import tinesone.monstermaze.util.NmsHelper;
 
 import java.util.List;
 import java.util.UUID;
 
-public class MobDisguise //implements Listener
+public class MobDisguise implements Listener
 {
     private static int nextId = 250_000;
     private final int id;
@@ -36,6 +39,8 @@ public class MobDisguise //implements Listener
         this.player = target;
         this.disguiseType = disguiseType;
         this.plugin = plugin;
+
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     public MobDisguise(Plugin plugin, Player target, EntityType disguiseType, boolean enable)
@@ -47,15 +52,13 @@ public class MobDisguise //implements Listener
     }
 
 
-
     public void enableDisguise()
     {
         if (enabled)
             return;
         enabled = true;
-        var others = plugin.getServer().getOnlinePlayers().stream()
-                .filter(v -> v != player)
-                .toList();
+
+        var others = getViewers();
 
         others.forEach(this::disguisePlayer);
 
@@ -103,9 +106,50 @@ public class MobDisguise //implements Listener
                 new PositionMoveRotation(new Vec3(player.getX(), player.getY(), player.getZ()), new Vec3(0, 0, 0), player.getYaw(), player.getPitch()),
                 true
         );
-        others.forEach(v -> {NmsHelper.sendPacketToBukkitPlayer(v, movePacket);});
+        Packet<?> headRotationPacket = buildHeadRotatePacket();
+        others.forEach(v -> {
+            NmsHelper.sendPacketToBukkitPlayer(v, movePacket);
+            NmsHelper.sendPacketToBukkitPlayer(v, headRotationPacket);
+        });
     }
 
+    @EventHandler
+    public void syncPunch(PlayerInteractEvent event)
+    {
+        if (event.getPlayer() != player || event.getAction() != Action.LEFT_CLICK_AIR) return;
+        updatePlayerDisguiseAnimation(getViewers(), 0);
+    }
+
+    private void updatePlayerDisguiseAnimation(List<? extends Player> others, int animationNum)
+    {
+        Packet<?> punchPacket = buildAnimatePacket(animationNum);
+        others.forEach(v -> NmsHelper.sendPacketToBukkitPlayer(v, punchPacket));
+    }
+
+    private ClientboundAnimatePacket buildAnimatePacket(int animationNum)
+    {
+        StreamCodec<FriendlyByteBuf, ClientboundAnimatePacket> codec = ClientboundAnimatePacket.STREAM_CODEC;
+        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+        buf.writeVarInt(this.id);
+        buf.writeVarInt(animationNum);
+        return codec.decode(buf);
+    }
+
+    private ClientboundRotateHeadPacket buildHeadRotatePacket()
+    {
+        StreamCodec<FriendlyByteBuf, ClientboundRotateHeadPacket> codec = ClientboundRotateHeadPacket.STREAM_CODEC;
+        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+        buf.writeVarInt(this.id);
+        buf.writeByte(Mth.packDegrees(player.getYaw()));
+        return codec.decode(buf);
+    }
+
+    private List<? extends Player> getViewers()
+    {
+        return plugin.getServer().getOnlinePlayers().stream()
+                .filter(v -> v != player)
+                .toList();
+    }
 
     public EntityType getDisguiseType()
     {
@@ -127,9 +171,4 @@ public class MobDisguise //implements Listener
         return enabled;
     }
 
-//    @EventHandler
-//    public void syncPunch(PlayerInteractEvent event)
-//    {
-//
-//    }
 }
