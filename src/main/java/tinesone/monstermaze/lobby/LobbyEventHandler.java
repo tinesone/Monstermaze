@@ -6,7 +6,6 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -114,8 +113,16 @@ public final class LobbyEventHandler implements Listener
         if (!(event.getHitEntity() instanceof Player) && event.getEntity().getWorld() != plugin.getServer().getWorlds().getFirst()) return;
         event.getEntity().remove();
         event.setCancelled(true);
+        sheepMorph(event);
+    }
+
+    private void sheepMorph(ProjectileHitEvent event)
+    {
         MobDisguise disguise = new MobDisguise(plugin, (Player) event.getHitEntity(), EntityType.SHEEP, true);
         long duration = ConfigHelper.getLong("lobby-sheep-morph-duration")*20; //20 ticks in each second
+        assert event.getHitEntity() != null;
+        ((Player) event.getHitEntity()).playSound(event.getHitEntity().getLocation(), Sound.ENTITY_SHEEP_HURT, 2.0f, 1.0f);
+        event.getHitEntity().sendActionBar(Component.text("You are a sheep!").color(NamedTextColor.YELLOW));
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, disguise::disableDisguise, duration);
     }
 
