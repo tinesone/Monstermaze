@@ -2,13 +2,17 @@ package tinesone.monstermaze.lobby;
 
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.title.Title;
+import net.kyori.adventure.title.TitlePart;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -27,6 +31,7 @@ import org.bukkit.potion.PotionEffectType;
 import tinesone.monstermaze.disguise.MobDisguise;
 import tinesone.monstermaze.util.ConfigHelper;
 
+import java.time.Duration;
 import java.util.*;
 
 public final class LobbyEventHandler implements Listener
@@ -35,7 +40,6 @@ public final class LobbyEventHandler implements Listener
 
     private final Location spawnLocation;
     private final Location parkourStartLocation;
-    private final Location[] doorLocations;
 
 
 
@@ -46,7 +50,6 @@ public final class LobbyEventHandler implements Listener
 
         this.spawnLocation = ConfigHelper.getLocation(lobby, "lobby-spawn-location");
         this.parkourStartLocation = ConfigHelper.getLocation(lobby, "lobby-parkour-location");
-        this.doorLocations = ConfigHelper.getLocations(lobby, "lobby-start-doors");
     }
 
 
@@ -117,6 +120,7 @@ public final class LobbyEventHandler implements Listener
         long duration = ConfigHelper.getLong("lobby-sheep-morph-duration")*20; //20 ticks in each second
         assert event.getHitEntity() != null;
         ((Player) event.getHitEntity()).playSound(event.getHitEntity().getLocation(), Sound.ENTITY_SHEEP_HURT, 2.0f, 1.0f);
+        event.getHitEntity().sendTitlePart(TitlePart.TIMES, Title.Times.times(Duration.ofSeconds(0), Duration.ofSeconds(duration), Duration.ofSeconds(0)));
         event.getHitEntity().sendActionBar(Component.text("You are a sheep!").color(NamedTextColor.YELLOW));
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, disguise::disableDisguise, duration);
     }
@@ -156,36 +160,11 @@ public final class LobbyEventHandler implements Listener
 
         player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, PotionEffect.INFINITE_DURATION, 0, false, false));
 
-        placeDoors(player, doorLocations);
 
         setupLobbyItems(player);
 
     }
 
-    private void openRandomLobbyDoorToPlayer(Player player)
-    {
-        Random rnd = new Random();
-
-        assert doorLocations != null;
-        int randomIndex = rnd.nextInt(doorLocations.length);
-
-
-        doorLocations[randomIndex] = null;
-        placeDoors(player, doorLocations);
-    }
-
-
-
-    private void placeDoors(Player player, Location[] locations)
-    {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
-            Arrays.stream(locations).forEach(location -> {
-                if(location == null) return;
-                player.sendBlockChange(location, Material.STONE_BRICKS.createBlockData());
-                player.sendBlockChange(location.clone().add(0, 1, 0), Material.STONE_BRICKS.createBlockData());
-            });
-        }, 0, 1);
-    }
 
 
     private void resetParkour(Player player)
@@ -221,5 +200,14 @@ public final class LobbyEventHandler implements Listener
 
         player.getInventory().setItem(0, LobbyItems.readyItem(LobbyReadyGame.isReady(player)));
         player.getInventory().setItem(1, LobbyItems.getClassSelectItem());
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void kickLatePlayer(PlayerJoinEvent event)
+    {
+        if (LobbyStartGame.startingGame)
+        {
+            event.getPlayer().kick(Component.text("Game is starting. Please wait 1 minute").color(NamedTextColor.DARK_RED));
+        }
     }
 }

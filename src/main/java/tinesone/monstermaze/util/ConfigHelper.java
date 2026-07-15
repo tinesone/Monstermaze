@@ -78,6 +78,13 @@ public final class ConfigHelper
         return plugin.getConfig().getLong(longNameInConfig);
     }
 
+    public static long getInt(String intNameInConfig)
+    {
+        Plugin plugin = Bukkit.getPluginManager().getPlugin("Monstermaze");
+        assert plugin != null;
+        return plugin.getConfig().getInt(intNameInConfig);
+    }
+
     public static Map<String, Double> getScaleValues(String scalesInConfig)
     {
         Plugin plugin = Bukkit.getPluginManager().getPlugin("Monstermaze");

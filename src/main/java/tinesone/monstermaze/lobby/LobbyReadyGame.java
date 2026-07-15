@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,10 +22,19 @@ public final class LobbyReadyGame implements Listener
 {
     private static final HashMap<Player, Boolean> readyPlayers = new HashMap<>();
     private static final World lobbyWorld = Bukkit.getWorlds().getFirst();
+    //The first world (ie, the world in server.properties) should always be the lobby world
 
     private static BossBar readyBossBar = Bukkit.createBossBar("§40/0", BarColor.BLUE, BarStyle.SOLID);
     private static BossBar notReadyBossBar = Bukkit.createBossBar("§40/0", BarColor.RED, BarStyle.SOLID);
-    //The first world (ie, the world in server.properties) should always be the lobby world
+    private final LobbyDoors lobbyDoors;
+
+    private final Plugin plugin;
+
+    public LobbyReadyGame(Plugin plugin, LobbyDoors lobbyDoors)
+    {
+        this.plugin = plugin;
+        this.lobbyDoors = lobbyDoors;
+    }
 
     public static boolean isReady(Player player)
     {
@@ -82,6 +92,12 @@ public final class LobbyReadyGame implements Listener
         readyBossBar.setProgress((double) getReadyPlayers().length / Bukkit.getOnlinePlayers().size());
     }
 
+    public static void removeBossBars()
+    {
+        readyBossBar.removeAll();
+        notReadyBossBar.removeAll();
+    }
+
     private static void addPlayerToBossBar(Player player)
     {
         if (isReady(player))
@@ -102,7 +118,7 @@ public final class LobbyReadyGame implements Listener
     {
         Player player = event.getPlayer();
         readyPlayers.remove(player);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("Monstermaze")), LobbyReadyGame::updateBossBar, 5);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, LobbyReadyGame::updateBossBar, 5);
     }
 
     @EventHandler
@@ -120,6 +136,7 @@ public final class LobbyReadyGame implements Listener
 
         player.getInventory().setItem(player.getInventory().getHeldItemSlot(), LobbyItems.readyItem(isReady(player)));
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 100, getPitch(isReady(player)));
+        LobbyStartGame.StartGame(plugin, lobbyDoors);
     }
 
     private float getPitch(boolean isReady)
