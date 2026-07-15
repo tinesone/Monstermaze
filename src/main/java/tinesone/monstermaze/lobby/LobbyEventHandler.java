@@ -27,12 +27,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import tinesone.monstermaze.disguise.MobDisguise;
 import tinesone.monstermaze.util.ConfigHelper;
-import tinesone.monstermaze.util.Task;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public final class LobbyEventHandler implements Listener
 {
@@ -42,7 +38,6 @@ public final class LobbyEventHandler implements Listener
     private final Location parkourStartLocation;
     private final Location[] doorLocations;
 
-    private HashSet<Task> taskList = new HashSet<>();
 
     private Map<Player, Boolean> readyToStart = new HashMap<>();
 
@@ -178,14 +173,12 @@ public final class LobbyEventHandler implements Listener
 
     private void placeDoors(Player player, Location[] locations)
     {
-        new Task(() -> {
-
-            for (Location location : locations)
-            {
-                if (location == null) continue;
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            Arrays.stream(locations).forEach(location -> {
+                if(location == null) return;
                 player.sendBlockChange(location, Material.STONE_BRICKS.createBlockData());
                 player.sendBlockChange(location.clone().add(0, 1, 0), Material.STONE_BRICKS.createBlockData());
-            }
+            });
         }, 0, 1);
     }
 

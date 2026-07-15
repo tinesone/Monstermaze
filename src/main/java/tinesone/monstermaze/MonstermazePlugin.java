@@ -12,7 +12,6 @@ import tinesone.monstermaze.commands.GenerateMazeCommand;
 import tinesone.monstermaze.disguise.MobDisguise;
 import tinesone.monstermaze.levelbuilder.LevelBuilder;
 import tinesone.monstermaze.lobby.LobbyEventHandler;
-import tinesone.monstermaze.util.Task;
 
 import java.util.Objects;
 
@@ -28,9 +27,9 @@ public class MonstermazePlugin extends JavaPlugin implements Listener
 
         Bukkit.getPluginManager().registerEvents(new LobbyEventHandler(this), this);
 
-        this.getComponentLogger().info(Component.text("Successfully enabled Monstermaze plugin!!").color(NamedTextColor.GOLD));
+        this.getComponentLogger().info(Component.text("Successfully enabled Monstermaze plugin!! Version: " + this.getPluginMeta().getVersion()).color(NamedTextColor.GOLD));
 
-        new Task(this);
+        //new Task(this);
     }
 
     @Override
