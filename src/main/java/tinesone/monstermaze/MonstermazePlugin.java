@@ -12,6 +12,7 @@ import tinesone.monstermaze.commands.GenerateMazeCommand;
 import tinesone.monstermaze.disguise.MobDisguise;
 import tinesone.monstermaze.levelbuilder.LevelBuilder;
 import tinesone.monstermaze.lobby.LobbyEventHandler;
+import tinesone.monstermaze.lobby.LobbyStartGame;
 
 import java.util.Objects;
 
@@ -21,15 +22,25 @@ public class MonstermazePlugin extends JavaPlugin implements Listener
     public void onEnable()
     {
         saveDefaultConfig();
-        LevelBuilder levelBuilder = new LevelBuilder(this);
-        Objects.requireNonNull(getCommand("generateMaze")).setExecutor(new GenerateMazeCommand(this, levelBuilder));
-        Objects.requireNonNull(getCommand("disguise")).setExecutor(new DisguiseTestCommand(this));
 
-        Bukkit.getPluginManager().registerEvents(new LobbyEventHandler(this), this);
+        registerCommands();
+        registerEvents();
 
         this.getComponentLogger().info(Component.text("Successfully enabled Monstermaze plugin!! Version: " + this.getPluginMeta().getVersion()).color(NamedTextColor.GOLD));
 
-        //new Task(this);
+    }
+
+    private void registerCommands()
+    {
+        LevelBuilder levelBuilder = new LevelBuilder(this);
+        Objects.requireNonNull(getCommand("generateMaze")).setExecutor(new GenerateMazeCommand(this, levelBuilder));
+        Objects.requireNonNull(getCommand("disguise")).setExecutor(new DisguiseTestCommand(this));
+    }
+
+    private void registerEvents()
+    {
+        Bukkit.getPluginManager().registerEvents(new LobbyStartGame(), this);
+        Bukkit.getPluginManager().registerEvents(new LobbyEventHandler(this), this);
     }
 
     @Override

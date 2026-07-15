@@ -16,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -39,7 +40,6 @@ public final class LobbyEventHandler implements Listener
     private final Location[] doorLocations;
 
 
-    private Map<Player, Boolean> readyToStart = new HashMap<>();
 
     public LobbyEventHandler(Plugin plugin)
     {
@@ -105,8 +105,10 @@ public final class LobbyEventHandler implements Listener
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event)
     {
-        if (!(event.getHitEntity() instanceof Player) && event.getEntity().getWorld() != plugin.getServer().getWorlds().getFirst()) return;
+        if (event.getEntity().getWorld() != plugin.getServer().getWorlds().getFirst()) return;
         event.getEntity().remove();
+        if (event.getHitEntity() == null) return;
+        if (!(event.getHitEntity() instanceof Player)) return;
         event.setCancelled(true);
         sheepMorph(event);
     }
@@ -140,6 +142,13 @@ public final class LobbyEventHandler implements Listener
                 .build());
     }
 
+    @EventHandler
+    public void cancelDrop(PlayerDropItemEvent event)
+    {
+        if (event.getPlayer().getWorld() != plugin.getServer().getWorlds().getFirst()) return;
+        event.setCancelled(true);
+    }
+
 
     private void SetupLobbyPlayer(Player player)
     {
@@ -150,8 +159,6 @@ public final class LobbyEventHandler implements Listener
         player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, PotionEffect.INFINITE_DURATION, 0, false, false));
 
         placeDoors(player, doorLocations);
-
-        readyToStart.put(player, false);
 
         setupLobbyItems(player);
 
@@ -213,8 +220,17 @@ public final class LobbyEventHandler implements Listener
     {
         player.getInventory().clear();
 
+
+        player.getInventory().setItem(0, LobbyItems.readyItem(LobbyStartGame.isReady(player)));
+        player.getInventory().setItem(1, getClassItem());
+    }
+
+    private ItemStack getClassItem()
+    {
+        //This is for a planned feature, later in the project
         ItemStack eye = new ItemStack(Material.ENDER_EYE);
         ItemMeta meta = eye.getItemMeta();
+
         meta.addItemFlags(ItemFlag.values());
         meta.displayName(Component.text()
                 .content("Choose your class. Currently selected: ")
@@ -226,47 +242,6 @@ public final class LobbyEventHandler implements Listener
                 .build());
 
         eye.setItemMeta(meta);
-
-        player.getInventory().setItem(0, readyItem(readyToStart.get(player)));
-        player.getInventory().setItem(1, eye);
-    }
-
-    private ItemStack readyItem(Boolean isReady)
-    {
-        Material material;
-        TextComponent itemName;
-        if (isReady)
-        {
-            material = Material.EMERALD;
-            itemName = Component.text()
-                    .content("Ready!")
-                    .decoration(TextDecoration.ITALIC, false)
-                    .decoration(TextDecoration.BOLD, true)
-                    .color(NamedTextColor.GREEN)
-                    .build();
-        }
-        else
-        {
-            material = Material.BARRIER;
-            itemName = Component.text()
-                    .content("Ready?")
-                    .decoration(TextDecoration.ITALIC, false)
-                    .color(NamedTextColor.DARK_RED)
-                    .build();
-        }
-
-        ItemStack readyItem = new ItemStack(material);
-        ItemMeta meta = readyItem.getItemMeta();
-        meta.displayName(itemName);
-        readyItem.setItemMeta(meta);
-
-        return readyItem;
-    }
-
-    @EventHandler
-    public void onPlayerLeave(PlayerQuitEvent event)
-    {
-        Player player = event.getPlayer();
-        readyToStart.remove(player);
+        return eye;
     }
 }
