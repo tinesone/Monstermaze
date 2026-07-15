@@ -222,26 +222,6 @@ public final class LobbyEventHandler implements Listener
 
 
         player.getInventory().setItem(0, LobbyItems.readyItem(LobbyStartGame.isReady(player)));
-        player.getInventory().setItem(1, getClassItem());
-    }
-
-    private ItemStack getClassItem()
-    {
-        //This is for a planned feature, later in the project
-        ItemStack eye = new ItemStack(Material.ENDER_EYE);
-        ItemMeta meta = eye.getItemMeta();
-
-        meta.addItemFlags(ItemFlag.values());
-        meta.displayName(Component.text()
-                .content("Choose your class. Currently selected: ")
-                .color(NamedTextColor.GOLD)
-                .decoration(TextDecoration.ITALIC, false)
-                .append(Component.text("None")
-                        .decoration(TextDecoration.ITALIC, true)
-                        .color(NamedTextColor.DARK_RED))
-                .build());
-
-        eye.setItemMeta(meta);
-        return eye;
+        player.getInventory().setItem(1, LobbyItems.getClassSelectItem());
     }
 }
