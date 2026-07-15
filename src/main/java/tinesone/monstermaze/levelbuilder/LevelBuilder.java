@@ -9,6 +9,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.structure.StructureManager;
 import tinesone.monstermaze.maze.Cell;
 import tinesone.monstermaze.maze.Maze;
+import tinesone.monstermaze.maze.MazeGenerator;
 import tinesone.monstermaze.maze.generators.Prims;
 
 import java.io.IOException;
@@ -30,7 +31,7 @@ public class LevelBuilder
 
     public boolean place(Location initLocation, int width, int height, String mazeFolder)
     {
-        Prims prims = new Prims();
+        MazeGenerator prims = new Prims();
         Maze maze = prims.generate(width, height);
 
         if (!this.sanityCheck(mazeFolder)) { return false; } //Structures are square, all rotations are present

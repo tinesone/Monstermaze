@@ -5,14 +5,13 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import tinesone.monstermaze.commands.DisguiseTestCommand;
 import tinesone.monstermaze.commands.GenerateMazeCommand;
 import tinesone.monstermaze.disguise.MobDisguise;
 import tinesone.monstermaze.levelbuilder.LevelBuilder;
 import tinesone.monstermaze.lobby.LobbyEventHandler;
-import tinesone.monstermaze.lobby.LobbyStartGame;
+import tinesone.monstermaze.lobby.LobbyReadyGame;
 
 import java.util.Objects;
 
@@ -39,7 +38,7 @@ public class MonstermazePlugin extends JavaPlugin
 
     private void registerEvents()
     {
-        Bukkit.getPluginManager().registerEvents(new LobbyStartGame(), this);
+        Bukkit.getPluginManager().registerEvents(new LobbyReadyGame(), this);
         Bukkit.getPluginManager().registerEvents(new LobbyEventHandler(this), this);
     }
 

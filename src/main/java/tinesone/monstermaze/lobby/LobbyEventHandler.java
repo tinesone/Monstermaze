@@ -2,7 +2,6 @@ package tinesone.monstermaze.lobby;
 
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
@@ -19,7 +18,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -221,7 +219,7 @@ public final class LobbyEventHandler implements Listener
         player.getInventory().clear();
 
 
-        player.getInventory().setItem(0, LobbyItems.readyItem(LobbyStartGame.isReady(player)));
+        player.getInventory().setItem(0, LobbyItems.readyItem(LobbyReadyGame.isReady(player)));
         player.getInventory().setItem(1, LobbyItems.getClassSelectItem());
     }
 }
