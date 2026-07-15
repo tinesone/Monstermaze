@@ -16,7 +16,7 @@ import tinesone.monstermaze.lobby.LobbyStartGame;
 
 import java.util.Objects;
 
-public class MonstermazePlugin extends JavaPlugin implements Listener
+public class MonstermazePlugin extends JavaPlugin
 {
     @Override
     public void onEnable()
