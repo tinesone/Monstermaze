@@ -1,20 +1,15 @@
 package tinesone.monstermaze.levelbuilder;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.structure.Mirror;
 import org.bukkit.block.structure.StructureRotation;
 import org.bukkit.structure.Structure;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.structure.StructureManager;
 import tinesone.monstermaze.maze.Cell;
 import tinesone.monstermaze.maze.Maze;
 import tinesone.monstermaze.maze.MazeGenerator;
-import tinesone.monstermaze.maze.generators.Prims;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Random;
