@@ -16,7 +16,6 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Objects;
 
 public final class LobbyReadyGame implements Listener
 {
@@ -26,14 +25,12 @@ public final class LobbyReadyGame implements Listener
 
     private static BossBar readyBossBar = Bukkit.createBossBar("§40/0", BarColor.BLUE, BarStyle.SOLID);
     private static BossBar notReadyBossBar = Bukkit.createBossBar("§40/0", BarColor.RED, BarStyle.SOLID);
-    private final LobbyDoors lobbyDoors;
 
     private final Plugin plugin;
 
-    public LobbyReadyGame(Plugin plugin, LobbyDoors lobbyDoors)
+    public LobbyReadyGame(Plugin plugin)
     {
         this.plugin = plugin;
-        this.lobbyDoors = lobbyDoors;
     }
 
     public static boolean isReady(Player player)
@@ -136,7 +133,9 @@ public final class LobbyReadyGame implements Listener
 
         player.getInventory().setItem(player.getInventory().getHeldItemSlot(), LobbyItems.readyItem(isReady(player)));
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 100, getPitch(isReady(player)));
-        LobbyStartGame.StartGame(plugin, lobbyDoors);
+        if(isReady(player)) {
+            LobbyStartGame.startTimerIfReady(plugin);
+        }
     }
 
     private float getPitch(boolean isReady)

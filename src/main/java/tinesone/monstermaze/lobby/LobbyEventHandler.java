@@ -165,8 +165,6 @@ public final class LobbyEventHandler implements Listener
 
     }
 
-
-
     private void resetParkour(Player player)
     {
         player.teleport(parkourStartLocation);

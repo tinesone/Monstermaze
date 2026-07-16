@@ -2,48 +2,86 @@ package tinesone.monstermaze.lobby;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.TitlePart;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import tinesone.monstermaze.util.ConfigHelper;
 
 import java.time.Duration;
+import java.util.HashSet;
 
 public final class LobbyStartGame
 {
     public static boolean startingGame = false;
+    private static boolean countdownStarted = false;
+    private static HashSet<Integer> taskIds = new HashSet<Integer>();
 
-    public static void StartGame(Plugin plugin, LobbyDoors lobbyDoors)
+
+    public static void startTimerIfReady(Plugin plugin)
     {
-        if(!LobbyReadyGame.allReady()) return;
+        if (startingGame) return;
+        else if(LobbyReadyGame.readyPercent() >= 1)
+        {
+            startGame(plugin);
+            return;
+        }
+        else if (countdownStarted) return;
         else if(LobbyReadyGame.getReadyPlayers().length < ConfigHelper.getInt("min-num-of-players")) return;
+        else if(LobbyReadyGame.readyPercent() < ConfigHelper.getLong("start-percentage")) return;
+        int countdownTimer = ConfigHelper.getInt("start-timer-duration");
+        countdownStarted = true;
+        timer(plugin, countdownTimer);
+    }
+
+    private static void timer(Plugin plugin, int durationInSeconds)
+    {
+        for(int i = 0; i < durationInSeconds; i++)
+        {
+            int finalI = i;
+            int taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                sendTimerTitleToAllPlayers(durationInSeconds - finalI);
+            }, i* 20L);
+            taskIds.add(taskId);
+        }
+        int taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            startGame(plugin);
+        }, (durationInSeconds + 1L)*20L);
+        taskIds.add(taskId);
+    }
+
+    private static void cancelTimers()
+    {
+        taskIds.forEach(Bukkit.getScheduler()::cancelTask);
+    }
+
+    private static void startGame(Plugin plugin)
+    {
+        cancelTimers();
+        countdownStarted = false;
         startingGame = true;
-        lobbyDoors.setDoorsOpenState(true);
         Bukkit.getOnlinePlayers().forEach(player -> {
-            sendSound(player);
-            sendTitle(player);
             player.getInventory().clear();
+            player.setGameMode(GameMode.SPECTATOR);
         });
         LobbyReadyGame.removeBossBars();
     }
 
-    private static void sendSound(Player player)
+
+    private static void sendTimerTitle(Player player, int num)
     {
-        player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 100, 0.75f);
-        player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 100, 0.5f);
+        player.sendTitlePart(TitlePart.TIMES, Title.Times.times(Duration.ofSeconds(0), Duration.ofSeconds((long) 1.5), Duration.ofSeconds(0)));
+        player.sendTitlePart(TitlePart.TITLE, Component.text(String.valueOf(num)).color(NamedTextColor.DARK_PURPLE));
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 100, 1);
     }
 
-    private static void sendTitle(Player player)
+    private static void sendTimerTitleToAllPlayers(int num)
     {
-        player.sendTitlePart(TitlePart.TIMES, Title.Times.times(Duration.ofSeconds(0), Duration.ofSeconds(5), Duration.ofSeconds(3)));
-        player.sendTitlePart(TitlePart.SUBTITLE, Component.text("Walk into the tower!")
-                .color(NamedTextColor.DARK_PURPLE));
-        player.sendTitlePart(TitlePart.TITLE, Component.text("Game starting!")
-                .color(NamedTextColor.DARK_PURPLE)
-                .decoration(TextDecoration.BOLD, true));
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            sendTimerTitle(player, num);
+        });
     }
 }

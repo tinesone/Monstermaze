@@ -10,7 +10,6 @@ import tinesone.monstermaze.commands.DisguiseTestCommand;
 import tinesone.monstermaze.commands.GenerateMazeCommand;
 import tinesone.monstermaze.disguise.MobDisguise;
 import tinesone.monstermaze.levelbuilder.LevelBuilder;
-import tinesone.monstermaze.lobby.LobbyDoors;
 import tinesone.monstermaze.lobby.LobbyEventHandler;
 import tinesone.monstermaze.lobby.LobbyReadyGame;
 
@@ -25,9 +24,7 @@ public class MonstermazePlugin extends JavaPlugin
 
         registerCommands();
 
-        LobbyDoors lobbyDoors = new LobbyDoors();
-        lobbyDoors.setDoorsOpenState(false);
-        registerEvents(lobbyDoors);
+        registerEvents();
 
         this.getComponentLogger().info(Component.text("Successfully enabled Monstermaze plugin!! Version: " + this.getPluginMeta().getVersion()).color(NamedTextColor.GOLD));
 
@@ -40,9 +37,9 @@ public class MonstermazePlugin extends JavaPlugin
         Objects.requireNonNull(getCommand("disguise")).setExecutor(new DisguiseTestCommand(this));
     }
 
-    private void registerEvents(LobbyDoors lobbyDoors)
+    private void registerEvents()
     {
-        Bukkit.getPluginManager().registerEvents(new LobbyReadyGame(this, lobbyDoors), this);
+        Bukkit.getPluginManager().registerEvents(new LobbyReadyGame(this), this);
         Bukkit.getPluginManager().registerEvents(new LobbyEventHandler(this), this);
     }
 

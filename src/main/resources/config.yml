@@ -33,6 +33,12 @@ lobby-start-doors:
     y: -38
     z: 8
 
+#percentage of players that need to be ready for the countdown to start (0-1)
+start-percentage: 0.6
+
+#duration of start-timer in seconds
+start-timer-duration: 90
+
 #Minimum number of players needed to start the game:
 min-num-of-players: 1
 
