@@ -11,6 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import tinesone.monstermaze.levelbuilder.LevelBuilder;
+import tinesone.monstermaze.levelbuilder.MazeTiles;
+import tinesone.monstermaze.maze.Maze;
+import tinesone.monstermaze.maze.generators.Prims;
 
 
 public class GenerateMazeCommand implements CommandExecutor
@@ -18,10 +21,10 @@ public class GenerateMazeCommand implements CommandExecutor
     private final LevelBuilder levelBuilder;
     private final Plugin plugin;
 
-    public GenerateMazeCommand(Plugin plugin, LevelBuilder levelBuilder)
+    public GenerateMazeCommand(Plugin plugin)
     {
         this.plugin = plugin;
-        this.levelBuilder = levelBuilder;
+        this.levelBuilder = new LevelBuilder(plugin, "example");
     }
 
     @Override
@@ -50,7 +53,7 @@ public class GenerateMazeCommand implements CommandExecutor
         }
 
 
-        if (!levelBuilder.place(initialLocation, 25, 35, "test"))
+        if (!levelBuilder.place(initialLocation, new Prims()))
         {
             commandSender.sendMessage(Component.text("An Error when building the maze has occurred. Please check the log/console").color(NamedTextColor.RED));
             return true;

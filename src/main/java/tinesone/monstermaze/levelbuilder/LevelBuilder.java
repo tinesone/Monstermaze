@@ -18,32 +18,29 @@ import java.util.Objects;
 import java.util.Random;
 
 
-public class LevelBuilder
+public final class LevelBuilder
 {
-    private final Plugin plugin;
 
     private final Random rn = new Random();
+    private final MazeTiles mazeTiles;
 
-    public LevelBuilder(Plugin plugin)
+    public LevelBuilder(Plugin plugin, String mazeFolder)
     {
-        this.plugin = plugin;
+        this.mazeTiles = new MazeTiles(plugin, mazeFolder);
     }
 
-    public boolean place(Location initLocation, int width, int height, String mazeFolder)
+    public boolean place(Location initLocation, MazeGenerator mazeGenerator)
     {
-        MazeGenerator prims = new Prims();
-        Maze maze = prims.generate(width, height);
+        Maze maze = mazeGenerator.generate(mazeTiles.getWidth(), mazeTiles.getHeight());
 
-        if (!this.sanityCheck(mazeFolder)) { return false; } //Structures are square, all rotations are present
+        int cellLength = Objects.requireNonNull(mazeTiles.getStructure(CellType.WALL, Rotation.DEGREES_0)).getSize().getBlockX();
 
-        int cellLength = Objects.requireNonNull(getStructure(CellType.WALL, mazeFolder, Rotation.DEGREES_0)).getSize().getBlockX();
-
-       for(int x = 0; x < width; x++)
+       for(int x = 0; x < mazeTiles.getWidth(); x++)
        {
-           for(int y = 0; y < height; y++)
+           for(int y = 0; y < mazeTiles.getHeight(); y++)
            {
-               Cell cell = maze.grid()[x + y*width];
-               Structure structure = getStructure(cell.getCellType(), mazeFolder, cell.getRotation());
+               Cell cell = maze.grid()[x + y* mazeTiles.getWidth()];
+               Structure structure = mazeTiles.getStructure(cell.getCellType(), cell.getRotation());
 
                Location placeLocation = initLocation.clone().add(x*cellLength, 0, y*cellLength);
 
@@ -51,54 +48,6 @@ public class LevelBuilder
                structure.place(placeLocation, false, StructureRotation.NONE, Mirror.NONE, 0, 1, rn);
            }
        }
-
-        return true;
-    }
-
-    private Structure getStructure(CellType cellType, String resourceFolderName, Rotation rotation)
-    {
-        String fileLocation = cellType.getStructureLocation(resourceFolderName, rotation);
-
-
-        InputStream stream = plugin.getResource(fileLocation);
-
-        if(stream == null)
-        {
-            return null;
-        }
-
-
-        StructureManager structureManager = Bukkit.getStructureManager();
-        try
-        {
-            return structureManager.loadStructure(stream);
-        } catch (IOException e)
-        {
-            return null;
-        }
-    }
-
-
-    private boolean sanityCheck(String mazeFolder) //Returns false is something is wrong with any of the structures in the selected folder.
-    {
-        for(CellType cellType : CellType.values())
-        {
-            for(Rotation rotation: Rotation.values())
-            {
-                if (plugin.getResource(cellType.getStructureLocation(mazeFolder, rotation)) == null)
-                {
-                    plugin.getComponentLogger().warn("Not all cells have a .nbt file! Missing: {}, Rotation variant: {}", mazeFolder + "/" + cellType, rotation);
-                    return false;
-                }
-                Structure structure = getStructure(cellType, mazeFolder, rotation);
-                assert structure != null;
-                if ((structure.getSize().getZ()) != structure.getSize().getX())
-                {
-                    plugin.getComponentLogger().warn("Not all cells are square! Wrong size structure: {}, X: {}, Z: {}, Rotation variant: {}", mazeFolder + "/" + cellType, structure.getSize().getZ(), structure.getSize().getX(), rotation);
-                    return false;
-                }
-            }
-        }
         return true;
     }
 }

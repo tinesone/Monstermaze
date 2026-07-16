@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import tinesone.monstermaze.commands.DisguiseTestCommand;
 import tinesone.monstermaze.commands.GenerateMazeCommand;
 import tinesone.monstermaze.disguise.MobDisguise;
+import tinesone.monstermaze.game.Game;
 import tinesone.monstermaze.levelbuilder.LevelBuilder;
 import tinesone.monstermaze.lobby.LobbyEventHandler;
 import tinesone.monstermaze.lobby.LobbyReadyGame;
@@ -17,6 +18,9 @@ import java.util.Objects;
 
 public class MonstermazePlugin extends JavaPlugin
 {
+
+    private static Game game;
+
     @Override
     public void onEnable()
     {
@@ -32,8 +36,7 @@ public class MonstermazePlugin extends JavaPlugin
 
     private void registerCommands()
     {
-        LevelBuilder levelBuilder = new LevelBuilder(this);
-        Objects.requireNonNull(getCommand("generateMaze")).setExecutor(new GenerateMazeCommand(this, levelBuilder));
+        Objects.requireNonNull(getCommand("generateMaze")).setExecutor(new GenerateMazeCommand(this));
         Objects.requireNonNull(getCommand("disguise")).setExecutor(new DisguiseTestCommand(this));
     }
 
@@ -50,5 +53,15 @@ public class MonstermazePlugin extends JavaPlugin
             Objects.requireNonNull(player.getAttribute(Attribute.SCALE)).setBaseValue(1f);
         }); //Reset scale before shutting down, prevent weird shenanigans.
         this.getComponentLogger().info("Goodbye!");
+    }
+
+    public static void setGame(Game game)
+    {
+        MonstermazePlugin.game = game;
+    }
+
+    public static Game getGame()
+    {
+        return MonstermazePlugin.game;
     }
 }

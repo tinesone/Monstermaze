@@ -9,6 +9,8 @@ import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import tinesone.monstermaze.MonstermazePlugin;
+import tinesone.monstermaze.game.Game;
 import tinesone.monstermaze.util.ConfigHelper;
 
 import java.time.Duration;
@@ -18,7 +20,7 @@ public final class LobbyStartGame
 {
     public static boolean startingGame = false;
     private static boolean countdownStarted = false;
-    private static HashSet<Integer> taskIds = new HashSet<Integer>();
+    private static final HashSet<Integer> taskIds = new HashSet<>();
 
 
     public static void startTimerIfReady(Plugin plugin)
@@ -68,6 +70,7 @@ public final class LobbyStartGame
             player.setGameMode(GameMode.SPECTATOR);
         });
         LobbyReadyGame.removeBossBars();
+        MonstermazePlugin.setGame(new Game(plugin, "example"));
     }
 
 
