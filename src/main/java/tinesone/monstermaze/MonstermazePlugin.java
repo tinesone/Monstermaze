@@ -8,6 +8,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.plugin.java.JavaPlugin;
 import tinesone.monstermaze.commands.DisguiseTestCommand;
 import tinesone.monstermaze.commands.GenerateMazeCommand;
+import tinesone.monstermaze.commands.StopCommand;
 import tinesone.monstermaze.disguise.MobDisguise;
 import tinesone.monstermaze.game.Game;
 import tinesone.monstermaze.levelbuilder.LevelBuilder;
@@ -38,6 +39,7 @@ public class MonstermazePlugin extends JavaPlugin
     {
         Objects.requireNonNull(getCommand("generateMaze")).setExecutor(new GenerateMazeCommand(this));
         Objects.requireNonNull(getCommand("disguise")).setExecutor(new DisguiseTestCommand(this));
+        Objects.requireNonNull(getCommand("stopgame")).setExecutor(new StopCommand());
     }
 
     private void registerEvents()

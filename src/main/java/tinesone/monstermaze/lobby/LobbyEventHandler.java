@@ -28,6 +28,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import tinesone.monstermaze.MonstermazePlugin;
 import tinesone.monstermaze.disguise.MobDisguise;
 import tinesone.monstermaze.util.ConfigHelper;
 
@@ -38,7 +39,7 @@ public final class LobbyEventHandler implements Listener
 {
     private final Plugin plugin;
 
-    private final Location spawnLocation;
+    private static Location spawnLocation;
     private final Location parkourStartLocation;
 
 
@@ -48,7 +49,7 @@ public final class LobbyEventHandler implements Listener
         this.plugin = plugin;
         World lobby = plugin.getServer().getWorlds().getFirst();
 
-        this.spawnLocation = ConfigHelper.getLocation(lobby, "lobby-spawn-location");
+        spawnLocation = ConfigHelper.getLocation(lobby, "lobby-spawn-location");
         this.parkourStartLocation = ConfigHelper.getLocation(lobby, "lobby-parkour-location");
     }
 
@@ -56,6 +57,8 @@ public final class LobbyEventHandler implements Listener
     @EventHandler
     public void onJoin(PlayerJoinEvent event)
     {
+        if (MonstermazePlugin.getGame() != null)
+            return;
         Player player = event.getPlayer();
         if(player.getWorld() != plugin.getServer().getWorlds().getFirst()) return;
         event.joinMessage(Component.text()
@@ -67,7 +70,7 @@ public final class LobbyEventHandler implements Listener
                         .color(NamedTextColor.YELLOW)
                         .decoration(TextDecoration.BOLD, false))
                 .build());
-        SetupLobbyPlayer(player);
+        SetupLobbyPlayer(player, plugin);
     }
 
     @EventHandler
@@ -152,9 +155,8 @@ public final class LobbyEventHandler implements Listener
     }
 
 
-    private void SetupLobbyPlayer(Player player)
+    public static void SetupLobbyPlayer(Player player, Plugin plugin)
     {
-        if (player.getWorld() != plugin.getServer().getWorlds().getFirst()) return;
         player.teleport(spawnLocation);
         player.setGameMode(GameMode.ADVENTURE);
 
@@ -191,7 +193,7 @@ public final class LobbyEventHandler implements Listener
         return bow;
     }
 
-    private void setupLobbyItems(Player player)
+    private static void setupLobbyItems(Player player)
     {
         player.getInventory().clear();
 

@@ -14,3 +14,6 @@ commands:
   disguise:
     description: Disguise as a mob. Used for testing purposes
     usage: /disguise <mob>
+  stopgame:
+    description: Stop a active game
+    usage: /stopgame

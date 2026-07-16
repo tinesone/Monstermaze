@@ -23,8 +23,8 @@ public final class LobbyReadyGame implements Listener
     private static final World lobbyWorld = Bukkit.getWorlds().getFirst();
     //The first world (ie, the world in server.properties) should always be the lobby world
 
-    private static BossBar readyBossBar = Bukkit.createBossBar("§40/0", BarColor.BLUE, BarStyle.SOLID);
-    private static BossBar notReadyBossBar = Bukkit.createBossBar("§40/0", BarColor.RED, BarStyle.SOLID);
+    private static final BossBar readyBossBar = Bukkit.createBossBar("§40/0", BarColor.BLUE, BarStyle.SOLID);
+    private static final BossBar notReadyBossBar = Bukkit.createBossBar("§40/0", BarColor.RED, BarStyle.SOLID);
 
     private final Plugin plugin;
 
