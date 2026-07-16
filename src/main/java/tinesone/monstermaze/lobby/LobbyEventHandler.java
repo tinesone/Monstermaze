@@ -157,6 +157,7 @@ public final class LobbyEventHandler implements Listener
 
     public static void SetupLobbyPlayer(Player player, Plugin plugin)
     {
+        LobbyReadyGame.setReady(player, false);
         player.teleport(spawnLocation);
         player.setGameMode(GameMode.ADVENTURE);
 

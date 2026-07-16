@@ -41,6 +41,7 @@ public final class LobbyReadyGame implements Listener
     public static void setReady(Player player, boolean readyStatus)
     {
         readyPlayers.put(player, readyStatus);
+        addPlayerToBossBar(player);
     }
 
     public static void swapReady(Player player)

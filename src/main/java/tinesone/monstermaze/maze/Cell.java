@@ -20,7 +20,6 @@ public class Cell {
         south = false;
         east = false;
         west = false;
-
     }
 
 

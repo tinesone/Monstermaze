@@ -14,6 +14,8 @@ import tinesone.monstermaze.maze.generators.Prims;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Random;
 
@@ -23,6 +25,8 @@ public final class LevelBuilder
 
     private final Random rn = new Random();
     private final MazeTiles mazeTiles;
+    private Maze maze;
+    private Location initLocation;
 
     public LevelBuilder(Plugin plugin, String mazeFolder)
     {
@@ -31,7 +35,8 @@ public final class LevelBuilder
 
     public boolean place(Location initLocation, MazeGenerator mazeGenerator)
     {
-        Maze maze = mazeGenerator.generate(mazeTiles.getWidth(), mazeTiles.getHeight());
+        maze = mazeGenerator.generate(mazeTiles.getWidth(), mazeTiles.getHeight());
+        this.initLocation = initLocation;
 
         int cellLength = Objects.requireNonNull(mazeTiles.getStructure(CellType.WALL, Rotation.DEGREES_0)).getSize().getBlockX();
 
@@ -49,5 +54,31 @@ public final class LevelBuilder
            }
        }
         return true;
+    }
+
+    public Location[] getSpawnLocations() throws IllegalStateException
+    {
+        if (maze == null)
+            throw new IllegalArgumentException("No maze generated");
+        if (initLocation == null)
+            throw new IllegalArgumentException("No init location provided");
+        HashSet<Location> locations = new HashSet<>();
+        Structure structure = mazeTiles.getStructure(CellType.WALL, Rotation.DEGREES_0);
+        double tileWidth = structure.getSize().getX();
+        double tileHeight = structure.getSize().getZ();
+        Location selectedLocation = initLocation.clone();
+        for(int x = 0; x < maze.getWidth(); x++)
+        {
+            for(int y = 0; y < maze.getHeight(); y++)
+            {
+                if (maze.grid()[x + y*maze.getWidth()].getCellType() == CellType.WALL)
+                    continue;
+                Location spawnLocation = selectedLocation.clone().add(tileWidth /2, 0, tileHeight /2);
+                locations.add(spawnLocation);
+                selectedLocation.add(0, 0, tileHeight);
+            }
+            selectedLocation.add(tileWidth, 0, -tileHeight*maze.getHeight());
+        }
+        return locations.toArray(new Location[0]);
     }
 }

@@ -3,47 +3,49 @@ package tinesone.monstermaze.game;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffectType;
 import tinesone.monstermaze.MonstermazePlugin;
 import tinesone.monstermaze.levelbuilder.LevelBuilder;
 import tinesone.monstermaze.lobby.LobbyEventHandler;
 import tinesone.monstermaze.lobby.LobbyStartGame;
 import tinesone.monstermaze.maze.generators.Prims;
 
-import java.util.Arrays;
 import java.util.Random;
 import java.util.UUID;
 
-public class Game
+public final class Game
 {
-    private final Player[] players;
     private final Player monster;
     private final Random random = new Random();
     private final World gameWorld;
     private final Plugin plugin;
     private int timer = 0;
 
-    public Game(Plugin plugin, Player monster, String levelName)
+    public Game(Plugin plugin, String levelName, Player monster)
     {
         LobbyStartGame.startingGame = false;
         this.plugin = plugin;
-        this.players = Bukkit.getOnlinePlayers().toArray(new Player[0]);
         this.monster = monster;
         this.gameWorld = Bukkit.createWorld(buildWorldCreator());
         gameWorldSettings();
 
         LevelBuilder levelBuilder = new LevelBuilder(plugin, levelName);
         levelBuilder.place(new Location(gameWorld, 0, 0, 0), new Prims());
-        Arrays.stream(players).forEach(player -> {
-            player.setGameMode(GameMode.CREATIVE);
-            player.teleport(new Location(gameWorld, 0, 5, 0));
+        Location[] spawnLocations = levelBuilder.getSpawnLocations();
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            player.setGameMode(GameMode.ADVENTURE);
+            teleportPlayerToSpawn(player, spawnLocations[random.nextInt(spawnLocations.length)]);
+            player.removePotionEffect(PotionEffectType.SATURATION);
+            player.addPotionEffect(PotionEffectType.BLINDNESS.createEffect(4*20, 0));
         });
+
     }
 
     public Game(Plugin plugin, String levelName)
     {
         Player[] players = Bukkit.getOnlinePlayers().toArray(new Player[0]);
         Player monster = players[new Random().nextInt(players.length)];
-        this(plugin, monster, levelName);
+        this(plugin, levelName, monster);
     }
 
     private void gameWorldSettings()
@@ -63,7 +65,8 @@ public class Game
     {
         return new WorldCreator("game-world-" + UUID.randomUUID())
                 .type(WorldType.FLAT)
-                .generatorSettings("{\"version\":3,\"layers\":[{\"block\":\"minecraft:air\",\"height\":1}],\"structures\":{},\"biome\":\"minecraft:plains\"}");
+                .generatorSettings("{\"version\":3,\"layers\":[{\"block\":\"minecraft:air\",\"height\":1}],\"structures\":{},\"biome\":\"minecraft:plains\"}")
+                .generateStructures(false);
     }
 
     public void stopGame()
@@ -72,5 +75,21 @@ public class Game
             LobbyEventHandler.SetupLobbyPlayer(player, plugin);
         });
         MonstermazePlugin.setGame(null);
+    }
+
+    private void teleportPlayerToSpawn(Player player, Location location)
+    {
+        boolean found_spawn = false;
+        while (!found_spawn)
+        {
+            if(location.getBlock().getType() == Material.AIR || location.getBlock().getType() == Material.VOID_AIR)
+            {
+                found_spawn = true;
+                continue;
+            }
+            //System.out.println(location.getBlock().toString());
+            location.add(0, 0.25, 0);
+        }
+        player.teleport(location);
     }
 }
