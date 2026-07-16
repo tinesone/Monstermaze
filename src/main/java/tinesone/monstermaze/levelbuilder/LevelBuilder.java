@@ -30,16 +30,16 @@ public final class LevelBuilder
 
     public boolean place(Location initLocation, MazeGenerator mazeGenerator)
     {
-        maze = mazeGenerator.generate(mazeTiles.getWidth(), mazeTiles.getHeight());
+        maze = mazeGenerator.generate(mazeTiles.getAmountTilesWidth(), mazeTiles.getAmountTilesHeight());
         this.initLocation = initLocation;
 
         int cellLength = Objects.requireNonNull(mazeTiles.getStructure(CellType.WALL, Rotation.DEGREES_0)).getSize().getBlockX();
 
-       for(int x = 0; x < mazeTiles.getWidth(); x++)
+       for(int x = 0; x < maze.getWidth(); x++)
        {
-           for(int y = 0; y < mazeTiles.getHeight(); y++)
+           for(int y = 0; y < maze.getHeight(); y++)
            {
-               Cell cell = maze.grid()[x + y* mazeTiles.getWidth()];
+               Cell cell = maze.grid()[x + y* mazeTiles.getAmountTilesWidth()];
                Structure structure = mazeTiles.getStructure(cell.getCellType(), cell.getRotation());
 
                Location placeLocation = initLocation.clone().add(x*cellLength, 0, y*cellLength);

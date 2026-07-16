@@ -36,12 +36,12 @@ public final class MazeTiles
         return loadStructure(cellType, rotation, mazeFolder);
     }
 
-    public int getWidth()
+    public int getAmountTilesWidth()
     {
         return width;
     }
 
-    public int getHeight()
+    public int getAmountTilesHeight()
     {
         return height;
     }
